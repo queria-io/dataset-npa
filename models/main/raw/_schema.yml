@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: raw_traffic_accident
+    description: 交通事故統計（本票）の生データ。緯度経度は度分秒連結の固定長文字列。
+    columns:
+      - name: prefecture_code
+        description: 都道府県コード（警察の管轄区分。北海道は方面別に5分割）
+      - name: police_station_code
+        description: 警察署等コード
+      - name: accident_number
+        description: 本票番号（都道府県・警察署等コードとの組で事故を識別）
+      - name: accident_type_code
+        description: 事故内容コード（1=死亡、2=負傷）
+      - name: fatalities
+        description: 死者数
+      - name: injuries
+        description: 負傷者数
+      - name: city_code
+        description: 市区町村コード（警察独自の3桁コード）
+      - name: occurred_year
+        description: 発生年
+      - name: occurred_month
+        description: 発生月
+      - name: occurred_day
+        description: 発生日
+      - name: occurred_hour
+        description: 発生時
+      - name: occurred_minute
+        description: 発生分
+      - name: day_night_code
+        description: 昼夜コード
+      - name: weather_code
+        description: 天候コード
+      - name: terrain_code
+        description: 地形コード
+      - name: road_surface_code
+        description: 路面状態コード
+      - name: road_shape_code
+        description: 道路形状コード
+      - name: traffic_signal_code
+        description: 信号機コード
+      - name: accident_pattern_code
+        description: 事故類型コード
+      - name: day_of_week_code
+        description: 曜日コード
+      - name: holiday_code
+        description: 祝日コード
+      - name: latitude_dms
+        description: 地点 緯度（北緯）。度分秒連結の9桁文字列
+      - name: longitude_dms
+        description: 地点 経度（東経）。度分秒連結の10桁文字列

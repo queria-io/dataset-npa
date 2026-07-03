@@ -1,0 +1,19 @@
+name: "npa"
+version: "1.0.0"
+
+profile: "npa"
+
+model-paths: ["models"]
+macro-paths: ["macros", "shared/macros"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  npa:
+    +database: npa
+    main:
+      raw:
+        +materialized: table
+      stg:
+        +materialized: view
+      mart:
+        +materialized: table
