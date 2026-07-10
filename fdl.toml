@@ -22,7 +22,7 @@ description = """警察庁が公開する交通事故統計情報のオープン
 cover = "🚨"
 tags = ['警察庁', '交通事故', '交通安全', 'GIS', '緯度経度']
 source_url = "https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html"
-repository_url = "https://github.com/flo8s/dataset-npa"
+repository_url = "https://github.com/queria-io/dataset-npa"
 schedule = "yearly"
 
 [meta.schemas]
