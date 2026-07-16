@@ -15,15 +15,16 @@ public_url = "http://localhost:4001"
 [meta]
 license = "公共データ利用規約（第1.0版）"
 license_url = "https://www.npa.go.jp/rules/index.html"
-title = "警察庁 交通事故統計"
-description = """警察庁が公開する交通事故統計情報のオープンデータ。
-死傷者を伴う交通事故を1件1レコードで収録し、発生日時・地点（緯度経度）・
-事故内容・天候・道路形状・事故類型などを持つ。"""
+title = "警察庁・都道府県警察 犯罪・交通事故統計"
+description = """警察庁と都道府県警察が公開する犯罪・交通事故のオープンデータ。
+交通事故統計情報（発生日時・地点の緯度経度・事故内容・天候・事故類型など）と、
+犯罪発生情報（街頭犯罪7手口の町丁目単位・1認知件1レコード）を収録する。"""
 cover = "🚨"
-tags = ['警察庁', '交通事故', '交通安全', 'GIS', '緯度経度']
+tags = ['警察庁', '都道府県警察', '交通事故', '犯罪', '防犯', 'GIS', '緯度経度', '町丁目']
 source_url = "https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html"
 repository_url = "https://github.com/queria-io/dataset-npa"
 schedule = "yearly"
 
 [meta.schemas]
 main.title = "メイン"
+crime.title = "犯罪発生情報"
