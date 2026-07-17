@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: raw_theft
+    description: |
+      都道府県警察 犯罪発生情報の生データ。警察庁標準様式（手口別の可変列）を
+      全手口の和集合スキーマへ統合済み。手口に存在しない列は NULL。
+    columns:
+      - name: crime_name
+        description: 罪名（窃盗）
+      - name: modus
+        description: 手口（ひったくり・車上ねらい・部品ねらい・自動販売機ねらい・自動車盗・オートバイ盗・自転車盗）
+      - name: police_station
+        description: 管轄警察署（発生地）
+      - name: police_box
+        description: 管轄交番・駐在所（発生地）
+      - name: city_code
+        description: 市区町村コード（発生地）。県により先頭ゼロが欠落した5桁表記が混在
+      - name: prefecture
+        description: 都道府県（発生地）。発生地不明の場合は空
+      - name: city
+        description: 市区町村（発生地）
+      - name: town
+        description: 町丁目（発生地）
+      - name: occurred_date_raw
+        description: 発生年月日（始期）。YYYYMMDD 形式または「不明」
+      - name: occurred_hour_raw
+        description: 発生時（始期）。0〜23 または「不明」
+      - name: location
+        description: 発生場所（道路上・駐車（輪）場・一戸建住宅等）
+      - name: location_detail
+        description: 発生場所の詳細（ひったくりには存在しない）
+      - name: victim_gender
+        description: 被害者の性別（ひったくりのみ）
+      - name: victim_age
+        description: 被害者の年齢（ひったくり・自転車盗のみ）
+      - name: victim_occupation
+        description: 被害者の職業（自転車盗のみ）
+      - name: cash_damage
+        description: 現金被害の有無（ひったくり・車上ねらい・自動販売機ねらいのみ）
+      - name: lock_status
+        description: 施錠関係（車上ねらい・自動車盗・オートバイ盗・自転車盗のみ）
+      - name: anti_theft_device
+        description: 盗難防止装置の有無（自動車盗・オートバイ盗のみ）
+      - name: stolen_property
+        description: 現金以外の主な被害品（部品ねらい・自動車盗・オートバイ盗のみ）
+      - name: source_prefecture
+        description: データ公表元の都道府県警察（発生地の都道府県とは別に常に値を持つ）
+      - name: data_year
+        description: 公開データの対象年（西暦）
