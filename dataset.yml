@@ -1,0 +1,65 @@
+spec_version: "0.1"
+name: npa
+title: 警察庁・都道府県警察 犯罪・交通事故統計
+description: |-
+  警察庁と都道府県警察が公開する犯罪・交通事故のオープンデータ。
+  交通事故統計情報（発生日時・地点の緯度経度・事故内容・天候・事故類型など）と、
+  犯罪発生情報（街頭犯罪7手口の町丁目単位・1認知件1レコード）を収録する。
+keywords:
+  - 警察庁
+  - 都道府県警察
+  - 交通事故
+  - 犯罪
+  - 防犯
+  - GIS
+  - 緯度経度
+  - 町丁目
+homepage: https://github.com/queria-io/dataset-npa
+language: ja
+
+licenses:
+  - JP-PDL-1.0
+
+sources:
+  - title: 交通事故統計情報のオープンデータ（警察庁）
+    path: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
+  - title: 犯罪オープンデータ リンク集（警察庁）
+    path: https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html
+
+contributors:
+  - title: 警察庁
+    path: https://www.npa.go.jp/
+    roles: [rightsHolder]
+  - title: 栃木県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・佐賀県警察・宮崎県警察・鹿児島県警察
+    roles: [rightsHolder]
+
+temporal_coverage: { start: "2024-01-01", end: "2024-12-31" }
+spatial_coverage: [JP]
+update_frequency: yearly
+cover: 🚨
+
+ai_context:
+  instructions: |
+    事故・犯罪の起きた場所と時間の分析に使う。2つの表は出どころも粒度も違う。
+    main.traffic_accident は警察庁の交通事故統計（28万2376件）で、死傷を伴う事故を
+    1件1行・緯度経度つきで収録する。2024年（令和6年）発生分のみ。
+    crime.theft は各県警の犯罪発生情報（9万3132件）で、街頭犯罪7手口を町丁目単位で収録する。
+    対象年は2024年（認知年）だが、発生日は認知より前に遡ることがあり、2017年まで古い値がある。
+    収録は9府県（栃木・千葉・神奈川・愛知・京都・大阪・佐賀・宮崎・鹿児島）だけで、
+    全国の犯罪件数としては使えない。府県間で件数を比べるのも意味を持たない。
+    交通事故のコードは警察独自で、JIS の市区町村コードとは別物。prefecture_code は
+    北海道を方面別に5分割しており、city_code は3桁の警察独自コード。lg_code とは結合できない。
+    一方 crime.theft の city_code は JIS の6桁（政令市は区コード）なので結合できる。
+    交通事故は「死者数＝発生から24時間以内」の定義。人身事故のみで物損事故は含まない。
+    犯罪発生情報の列は手口別様式の和集合なので、手口に存在しない列は NULL になる。
+  synonyms: [交通事故, 人身事故, 犯罪発生情報, 街頭犯罪, ひったくり, 自転車盗]
+  examples:
+    - 市区町村別の交通事故の件数を出したい
+    - 時間帯別・天候別の事故の起きやすさを見たい
+    - 自転車盗が多い町丁目を調べたい
+
+schemas:
+  - name: main
+    title: メイン
+  - name: crime
+    title: 犯罪発生情報
