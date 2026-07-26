@@ -18,9 +18,9 @@ import honhyo
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger("pipelines")
 
-FDL_DIR = Path(".fdl")
-CSV_PATH = FDL_DIR / "npa_honhyo.csv"
-CRIME_CSV_PATH = FDL_DIR / "npa_crime.csv"
+WORK_DIR = Path(".queria")
+CSV_PATH = WORK_DIR / "npa_honhyo.csv"
+CRIME_CSV_PATH = WORK_DIR / "npa_crime.csv"
 
 
 def dbt_build() -> None:
@@ -32,7 +32,7 @@ def dbt_build() -> None:
 
 
 def main() -> None:
-    FDL_DIR.mkdir(exist_ok=True)
+    WORK_DIR.mkdir(exist_ok=True)
 
     logger.info("1/3: honhyo (交通事故 本票)")
     rows = honhyo.download_and_normalize(CSV_PATH)
