@@ -1,12 +1,12 @@
 {# 都道府県警察 犯罪発生情報の生データ。
-   main.py が県警別・手口別の年別 CSV を取得・統合して .fdl/npa_crime.csv に保存する。
+   main.py が県警別・手口別の年別 CSV を取得・統合して .queria/npa_crime.csv に保存する。
    日付・時刻は「不明」等の非数値表現を含むため VARCHAR のまま読む。 #}
 
 {{ config(materialized='table') }}
 
 select *
 from read_csv(
-    '.fdl/npa_crime.csv',
+    '.queria/npa_crime.csv',
     header=true,
     columns={
         'crime_name': 'VARCHAR',

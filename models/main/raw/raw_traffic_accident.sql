@@ -1,12 +1,12 @@
 {# 警察庁 交通事故統計（本票）の生データ。
-   main.py が年別本票 CSV を取得・正規化して .fdl/npa_honhyo.csv に保存する。
+   main.py が年別本票 CSV を取得・正規化して .queria/npa_honhyo.csv に保存する。
    コード列は先頭ゼロを保持するため VARCHAR で読む。 #}
 
 {{ config(materialized='table') }}
 
 select *
 from read_csv(
-    '.fdl/npa_honhyo.csv',
+    '.queria/npa_honhyo.csv',
     header=true,
     columns={
         'prefecture_code': 'VARCHAR',
