@@ -13,8 +13,10 @@
 """
 
 import csv
+import http.client
 import io
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -24,6 +26,11 @@ DATA_YEAR = 2024
 
 # BODIK (data.bodik.jp) は短間隔の連続アクセスを 403 で一時ブロックするため控えめにする
 REQUEST_INTERVAL_SEC = 2.0
+
+# 9 提供元から 60 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
+# 接続断とタイムアウトは間を空けて取り直す
+FETCH_ATTEMPTS = 3
+FETCH_BACKOFF_SEC = 5.0
 
 # 原ファイル列名 -> 正規化列名。手口により存在する列が異なる（和集合）。
 COLUMN_MAP = {
@@ -134,8 +141,19 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
 
 def _fetch(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        return resp.read()
+    for attempt in range(1, FETCH_ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                return resp.read()
+        except (urllib.error.URLError, http.client.HTTPException, TimeoutError) as exc:
+            # 404 のような恒久的な応答は取り直しても変わらない。URL の更新が要る
+            if isinstance(exc, urllib.error.HTTPError):
+                raise
+            if attempt == FETCH_ATTEMPTS:
+                raise
+            print(f"  retry {attempt}/{FETCH_ATTEMPTS - 1}: {url} ({exc})")
+            time.sleep(FETCH_BACKOFF_SEC * attempt)
+    raise AssertionError("unreachable")
 
 
 def _decode_and_split(raw: bytes) -> list[list[str]]:
