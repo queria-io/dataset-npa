@@ -68,14 +68,15 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
         "ootobaitou": f"{_BODIK}/f62f46eb-9809-4611-ad37-9f05569f1264/resource/e9bc2467-69d9-43ac-9ff7-922b2d8863d4/download/d0110_2024_tochigi_2024ootobaitou_07006.csv",
         "zitensyatou": f"{_BODIK}/93627019-71d4-4ce9-9473-342e6faa7ac3/resource/716a26c5-551b-415d-be85-643e83d71e32/download/d0110_2024_tochigi_2024zitensyatou_07007.csv",
     }),
+    # 千葉県はファイル差し替え時に URL の連番が振り直され、旧番号は 404 になる。
     ("千葉県", 2024, {
-        "hittakuri": f"{_CHIBA}/000066997.csv",
-        "syazyounerai": f"{_CHIBA}/000066998.csv",
-        "buhinnerai": f"{_CHIBA}/000066999.csv",
-        "zidouhanbaikinerai": f"{_CHIBA}/000067000.csv",
-        "zidousyatou": f"{_CHIBA}/000067001.csv",
-        "ootobaitou": f"{_CHIBA}/000067002.csv",
-        "zitensyatou": f"{_CHIBA}/000067003.csv",
+        "hittakuri": f"{_CHIBA}/000074763.csv",
+        "syazyounerai": f"{_CHIBA}/000074764.csv",
+        "buhinnerai": f"{_CHIBA}/000074765.csv",
+        "zidouhanbaikinerai": f"{_CHIBA}/000074766.csv",
+        "zidousyatou": f"{_CHIBA}/000074767.csv",
+        "ootobaitou": f"{_CHIBA}/000074768.csv",
+        "zitensyatou": f"{_CHIBA}/000074769.csv",
     }),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
