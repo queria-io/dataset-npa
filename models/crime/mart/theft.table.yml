@@ -41,7 +41,7 @@ fields:
     description: ひったくり／車上ねらい／部品ねらい／自動販売機ねらい／自動車盗／オートバイ盗／自転車盗
   - name: prefecture
     title: 都道府県（発生地）
-    description: 発生地不明の場合は NULL
+    description: 発生地不明の場合は NULL（空欄・「日本国内のいずれかの場所」等の文言を NULL に寄せている）
   - name: city_code
     title: 市区町村コード（発生地）
     description: JIS 市区町村コード6桁（チェックデジット付き）。政令指定都市は区コード
