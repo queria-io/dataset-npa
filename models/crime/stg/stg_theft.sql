@@ -11,7 +11,11 @@ select
         when length(city_code) = 6 then city_code
         when length(city_code) = 5 then '0' || city_code
     end as city_code,
-    prefecture,
+    -- 発生地不明を空欄ではなく「日本国内のいずれかの場所」等の文言で表す県があるため、
+    -- 都道府県名でない値は空欄と同じく NULL に寄せる
+    case
+        when regexp_matches(prefecture, '(都|道|府|県)$') then prefecture
+    end as prefecture,
     city,
     town,
     -- YYYYMMDD 形式のみ日付化。「不明」等は NULL

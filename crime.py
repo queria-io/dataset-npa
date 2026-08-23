@@ -27,7 +27,7 @@ DATA_YEAR = 2024
 # BODIK (data.bodik.jp) は短間隔の連続アクセスを 403 で一時ブロックするため控えめにする
 REQUEST_INTERVAL_SEC = 2.0
 
-# 9 提供元から 60 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
+# 13 提供元から 91 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
 # 接続断とタイムアウトは間を空けて取り直す
 FETCH_ATTEMPTS = 3
 FETCH_BACKOFF_SEC = 5.0
@@ -61,11 +61,27 @@ _OSAKA = "https://www.police.pref.osaka.lg.jp/material/files/group/2"
 _AICHI = "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images"
 _KANAGAWA = "https://www.police.pref.kanagawa.jp/assets/entry"
 _CHIBA = "https://www.police.pref.chiba.jp/content/common"
+_AOMORI = "https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/csv"
+_FUKUSHIMA = "https://www.police.pref.fukushima.jp/seianki/homepage/top_page"
+_SAITAMA = "https://www.police.pref.saitama.lg.jp/documents/33251"
+_TOKUSHIMA = "https://www.police.pref.tokushima.jp/file/excel/28opendata"
 _BODIK = "https://data.bodik.jp/dataset"
+
+_MODUS = ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
+          "zidousyatou", "ootobaitou", "zitensyatou")
 
 # 県警別・手口別の年別 CSV。キーは手口スラッグ（警察庁リンク集の各県共通命名）。
 # BODIK 掲載県（栃木・京都・佐賀・宮崎・鹿児島）はリソース URL が UUID 固定。
 SOURCES: list[tuple[str, int, dict[str, str]]] = [
+    # 青森県は車上ねらいだけファイル名が syajyounerai（他県は syazyounerai）。
+    ("青森県", 2024, {
+        m: f"{_AOMORI}/2024/aomori_2024{'syajyounerai' if m == 'syazyounerai' else m}.csv"
+        for m in _MODUS
+    }),
+    ("福島県", 2024, {
+        m: f"{_FUKUSHIMA}/fukushima_2024{m}.csv"
+        for m in _MODUS
+    }),
     ("栃木県", 2024, {
         "hittakuri": f"{_BODIK}/2bbcd73a-ac37-4a26-9a23-fcc72a5cfdd4/resource/73c74380-78c7-4ca6-a68c-2d0a0022dbee/download/d0110_2024_tochigi_2024hittakuri_07001.csv",
         "syazyounerai": f"{_BODIK}/4467d71d-90dd-40d1-968b-589c019aa3a6/resource/0bbb38bb-223d-453e-b999-4e542b7c3fa1/download/d0110_2024_tochigi_2024syazyounerai_07002.csv",
@@ -74,6 +90,10 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
         "zidousyatou": f"{_BODIK}/d54a0f04-4734-41a1-a4fe-23519b434340/resource/9de3c2f1-fa0a-4c7f-8bbe-3563128afb89/download/d0110_2024_tochigi_2024zidousyatou_07005.csv",
         "ootobaitou": f"{_BODIK}/f62f46eb-9809-4611-ad37-9f05569f1264/resource/e9bc2467-69d9-43ac-9ff7-922b2d8863d4/download/d0110_2024_tochigi_2024ootobaitou_07006.csv",
         "zitensyatou": f"{_BODIK}/93627019-71d4-4ce9-9473-342e6faa7ac3/resource/716a26c5-551b-415d-be85-643e83d71e32/download/d0110_2024_tochigi_2024zitensyatou_07007.csv",
+    }),
+    ("埼玉県", 2024, {
+        m: f"{_SAITAMA}/saitama_2024{m}.csv"
+        for m in _MODUS
     }),
     # 千葉県はファイル差し替え時に URL の連番が振り直され、旧番号は 404 になる。
     ("千葉県", 2024, {
@@ -87,13 +107,11 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
     }),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
     }),
     ("愛知県", 2024, {
         m: f"{_AICHI}/aichi-2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
     }),
     ("京都府", 2024, {
         "hittakuri": f"{_BODIK}/6a5f0b5c-667e-4a06-bbb8-6d191a5b1179/resource/a0827686-62e9-4d24-be45-aab159fb78f6/download/kyoto_2024hittakuri.csv",
@@ -106,8 +124,11 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
     }),
     ("大阪府", 2024, {
         m: f"{_OSAKA}/osaka_2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
+    }),
+    ("徳島県", 2024, {
+        m: f"{_TOKUSHIMA}/tokushima_2024{m}.csv"
+        for m in _MODUS
     }),
     ("佐賀県", 2024, {
         "hittakuri": f"{_BODIK}/cec6d1da-8160-4967-bb9a-98092aa827e6/resource/61de0a68-0f01-4841-8473-7bdbb1ac5a2e/download/saga_2024hittakuri.csv",
