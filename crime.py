@@ -63,6 +63,9 @@ _KANAGAWA = "https://www.police.pref.kanagawa.jp/assets/entry"
 _CHIBA = "https://www.police.pref.chiba.jp/content/common"
 _BODIK = "https://data.bodik.jp/dataset"
 
+_MODUS = ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
+          "zidousyatou", "ootobaitou", "zitensyatou")
+
 # 県警別・手口別の年別 CSV。キーは手口スラッグ（警察庁リンク集の各県共通命名）。
 # BODIK 掲載県（栃木・京都・佐賀・宮崎・鹿児島）はリソース URL が UUID 固定。
 SOURCES: list[tuple[str, int, dict[str, str]]] = [
@@ -87,13 +90,11 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
     }),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
     }),
     ("愛知県", 2024, {
         m: f"{_AICHI}/aichi-2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
     }),
     ("京都府", 2024, {
         "hittakuri": f"{_BODIK}/6a5f0b5c-667e-4a06-bbb8-6d191a5b1179/resource/a0827686-62e9-4d24-be45-aab159fb78f6/download/kyoto_2024hittakuri.csv",
@@ -106,8 +107,7 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
     }),
     ("大阪府", 2024, {
         m: f"{_OSAKA}/osaka_2024{m}.csv"
-        for m in ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
-                  "zidousyatou", "ootobaitou", "zitensyatou")
+        for m in _MODUS
     }),
     ("佐賀県", 2024, {
         "hittakuri": f"{_BODIK}/cec6d1da-8160-4967-bb9a-98092aa827e6/resource/61de0a68-0f01-4841-8473-7bdbb1ac5a2e/download/saga_2024hittakuri.csv",
