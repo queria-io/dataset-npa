@@ -56,9 +56,9 @@
 部品ねらい・自動販売機ねらい・自動車盗・オートバイ盗・自転車盗）を1認知件1レコード・
 町丁目単位で収録します。
 
-現在は令和6年（2024年）分・9府県（栃木・千葉・神奈川・愛知・京都・大阪・佐賀・宮崎・鹿児島）を
-収録します。対象は利用規約で商用利用・再配布可を確認できた府県のみで、他の都道府県・過去年の
-取り込みは将来の拡張余地です。
+現在は令和6年（2024年）分・13府県（青森・福島・栃木・埼玉・千葉・神奈川・愛知・京都・大阪・
+徳島・佐賀・宮崎・鹿児島）を収録します。対象は利用規約で商用利用・再配布可を確認できた府県のみで、
+他の都道府県・過去年の取り込みは将来の拡張余地です。
 
 - crime_name: 罪名（VARCHAR、窃盗。一部に常習累犯窃盗）
 - modus: 手口（VARCHAR、ひったくり／車上ねらい／部品ねらい／自動販売機ねらい／自動車盗／オートバイ盗／自転車盗）
@@ -100,20 +100,25 @@ main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯�
 犯罪発生情報は、公表元の各都道府県警察の利用規約に従う。いずれも商用利用・再配布可
 （出典記載が条件）を確認済み。
 
+- 青森県警察: [公共データ利用規約（第1.0版）（PDL1.0）](https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/hanyoku_opendate.html)
+- 福島県警察: [福島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.fukushima.jp/16.kiyaku/16.kiyaku.html)
 - 栃木県警察: [CC BY 2.1 JP](https://data.bodik.jp/organization/090000)
+- 埼玉県警察: [埼玉県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.saitama.lg.jp/riyokiyaku.html)
 - 千葉県警察: [千葉県警察ウェブサイト利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.chiba.jp/kohoka/help_point01.html)
 - 神奈川県警察: [神奈川県警察利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.kanagawa.jp/tokei/hanzai_tokei/mesd0146.html)
 - 愛知県警察: [公共データ利用規約（第1.0版）（PDL1.0）](https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/crimeopendata.html)
 - 京都府警察: [CC BY 4.0](https://data.bodik.jp/organization/260002)
 - 大阪府警察: [大阪府警察公表データの利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.osaka.lg.jp/seikatsu/9260.html)
+- 徳島県警察: [徳島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.tokushima.jp/28opendata/index.html)
 - 佐賀県警察: [CC BY 4.0](https://data.bodik.jp/dataset/410004_hanzaijyouhou)
 - 宮崎県警察: [CC BY 4.0](https://data.bodik.jp/dataset/450006_1069)
 - 鹿児島県警察: [CC BY 4.0（オープンデータ利用規約併記）](https://data.bodik.jp/dataset/460001_hanzaihassei_2024)
 
 出典:
 「交通事故統計情報のオープンデータ」（警察庁）（https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html）、
-および栃木県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・佐賀県警察・
-宮崎県警察・鹿児島県警察の犯罪発生情報（犯罪オープンデータ）を加工して作成。
+および青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・愛知県警察・
+京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察の犯罪発生情報
+（犯罪オープンデータ）を加工して作成。
 
 Shift-JIS の CSV を UTF-8 へ変換し、交通事故は緯度経度の度分秒を十進度へ変換のうえ地点ポイントを
 生成する加工と各種コードへの名称付与、犯罪発生情報は手口別の可変列を和集合スキーマへ統合する
