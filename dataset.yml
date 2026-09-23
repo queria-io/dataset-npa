@@ -4,12 +4,16 @@ title: 警察庁・都道府県警察 犯罪・交通事故統計
 description: |-
   警察庁と都道府県警察が公開する犯罪・交通事故のオープンデータ。
   交通事故統計情報（発生日時・地点の緯度経度・事故内容・天候・事故類型など）と、
-  犯罪発生情報（街頭犯罪7手口の町丁目単位・1認知件1レコード）を収録する。
+  犯罪発生情報（街頭犯罪7手口の町丁目単位・1認知件1レコード）と、
+  犯罪統計資料（全都道府県の罪種別の認知件数・検挙件数・検挙人員）を収録する。
 keywords:
   - 警察庁
   - 都道府県警察
   - 交通事故
   - 犯罪
+  - 犯罪統計
+  - 認知件数
+  - 検挙率
   - 防犯
   - GIS
   - 緯度経度
@@ -25,6 +29,8 @@ sources:
     path: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
   - title: 犯罪オープンデータ リンク集（警察庁）
     path: https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html
+  - title: 犯罪統計（警察庁）
+    path: https://www.npa.go.jp/publications/statistics/sousa/statistics.html
 
 contributors:
   - title: 警察庁
@@ -33,14 +39,14 @@ contributors:
   - title: 青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察
     roles: [rightsHolder]
 
-temporal_coverage: { start: "2024-01-01", end: "2024-12-31" }
+temporal_coverage: { start: "2020-01-01", end: "2025-12-31" }
 spatial_coverage: [JP]
 update_frequency: yearly
 cover: 🚨
 
 ai_context:
   instructions: |
-    事故・犯罪の起きた場所と時間の分析に使う。2つの表は出どころも粒度も違う。
+    事故・犯罪の起きた場所と時間の分析に使う。3つの表は出どころも粒度も違う。
     main.traffic_accident は警察庁の交通事故統計（28万2376件）で、死傷を伴う事故を
     1件1行・緯度経度つきで収録する。2024年（令和6年）発生分のみ。
     crime.theft は各県警の犯罪発生情報（11万6448件）で、街頭犯罪7手口を町丁目単位で収録する。
@@ -53,14 +59,20 @@ ai_context:
     一方 crime.theft の city_code は JIS の6桁（政令市は区コード）なので結合できる。
     交通事故は「死者数＝発生から24時間以内」の定義。人身事故のみで物損事故は含まない。
     犯罪発生情報の列は手口別様式の和集合なので、手口に存在しない列は NULL になる。
-  synonyms: [交通事故, 人身事故, 犯罪発生情報, 街頭犯罪, ひったくり, 自転車盗]
+    crime.prefecture_crime は警察庁の犯罪統計資料（確定値）で、全47都道府県の罪種別の
+    認知件数・検挙件数・検挙人員を2020年から2025年まで持つ。全国を同じ定義で比べるときはこちらを使う。
+    罪種は包含関係がある（侵入盗は重要窃盗犯と窃盗犯の内数、窃盗犯は刑法犯の内数など）ので、
+    罪種をまたいで合計しない。prefecture_code は JIS の2桁。
+    2023年の刑法改正で強制性交等・強制わいせつは不同意性交等・不同意わいせつに置き換わった。
+  synonyms: [交通事故, 人身事故, 犯罪発生情報, 街頭犯罪, ひったくり, 自転車盗, 犯罪統計, 刑法犯, 検挙率]
   examples:
     - 市区町村別の交通事故の件数を出したい
     - 時間帯別・天候別の事故の起きやすさを見たい
     - 自転車盗が多い町丁目を調べたい
+    - 都道府県別の刑法犯の認知件数と検挙率の推移を見たい
 
 schemas:
   - name: main
     title: メイン
   - name: crime
-    title: 犯罪発生情報
+    title: 犯罪発生情報・犯罪統計

@@ -35,3 +35,21 @@ models:
       - name: stolen_property
       - name: source_prefecture
       - name: data_year
+
+  - name: prefecture_crime
+    description: |
+      警察庁 犯罪統計資料（1～12月分の確定値）の都道府県別・罪種別の認知件数・検挙件数・検挙人員。
+      1年×1罪種×1都道府県で1行。2020年から2025年まで。
+      罪種は刑法犯総数・窃盗犯総数・重要犯罪（殺人・強盗・放火など）・重要窃盗犯（侵入盗・自動車盗・
+      ひったくり・すり）・主な街頭犯罪総数・器物損壊・住居侵入で、互いに包含関係がある。
+      出典: 警察庁 犯罪統計資料（政府統計の総合窓口 e-Stat 掲載）。
+      https://www.npa.go.jp/publications/statistics/sousa/statistics.html
+    access: public
+    columns:
+      - name: year
+      - name: crime_type
+      - name: prefecture_code
+      - name: prefecture
+      - name: recognized_cases
+      - name: cleared_cases
+      - name: arrested_persons
