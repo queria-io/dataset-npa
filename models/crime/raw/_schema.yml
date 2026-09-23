@@ -48,3 +48,24 @@ models:
         description: データ公表元の都道府県警察（発生地の都道府県とは別に常に値を持つ）
       - name: data_year
         description: 公開データの対象年（西暦）
+
+  - name: raw_crime_stats
+    description: |
+      警察庁 犯罪統計資料（1～12月分の確定値）の都道府県別表の生データ。
+      第3表・第4表・第6表・第9表の当年の列を罪種×地域の縦持ちにしたもの。
+      地域は原表の2列のままで、全国・地方計・北海道の方面別の行を含む。
+    columns:
+      - name: year
+        description: 対象年（西暦。1～12月の確定値）
+      - name: crime_type
+        description: 罪種。原表のシートに対応し、公表どおりの名前で持つ
+      - name: area_group
+        description: 原表の1列目（地方名。全国の行は「全国」、東京都は単独で「東京都」）
+      - name: area
+        description: 原表の2列目（都道府県名・「計」・北海道の方面名。全国の行は「総数」）
+      - name: recognized_cases
+        description: 認知件数
+      - name: cleared_cases
+        description: 検挙件数
+      - name: arrested_persons
+        description: 検挙人員

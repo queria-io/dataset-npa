@@ -1,0 +1,68 @@
+schema: crime
+name: prefecture_crime
+title: 犯罪統計（都道府県別・罪種別）
+description: '警察庁 犯罪統計資料（1～12月分の確定値）の都道府県別・罪種別の認知件数・検挙件数・検挙人員。
+
+  1年×1罪種×1都道府県で1行。2020年から2025年まで。全都道府県を警察庁の同じ定義で集計した値で、
+
+  crime.theft（13府県・町丁目単位）の件数を全国の中で位置づける基準に使える。
+
+  罪種は互いに包含関係がある（侵入強盗は強盗の内数、侵入盗は重要窃盗犯と窃盗犯の内数、
+
+  窃盗犯は刑法犯の内数など）。罪種をまたいで合計しない。
+
+  2023年の刑法改正で強制性交等・強制わいせつは不同意性交等・不同意わいせつに置き換わり、
+
+  構成要件も変わったため、公表どおり別の罪種名で持つ。
+
+  検挙件数には前年以前に認知した事件の検挙を含むので、検挙件数÷認知件数（検挙率）は100%を超えることがある。
+
+  月次の暫定値は収録しない。
+
+  出典: 警察庁 犯罪統計資料（政府統計の総合窓口 e-Stat 掲載）。
+
+  https://www.npa.go.jp/publications/statistics/sousa/statistics.html'
+keywords:
+  - 警察庁
+  - 犯罪統計
+  - 認知件数
+  - 検挙件数
+  - 検挙率
+  - 刑法犯
+  - 都道府県
+  - 治安
+published: true
+licenses:
+  - JP-GOV-STD-2.0
+sources:
+  - path: https://www.npa.go.jp/publications/statistics/sousa/statistics.html
+fields:
+  - name: year
+    title: 対象年
+    description: 西暦。1～12月の確定値
+  - name: crime_type
+    title: 罪種
+    description: '刑法犯総数／窃盗犯総数／重要犯罪総数／殺人／強盗／侵入強盗／放火／強制性交等（2022年まで）／
+
+      不同意性交等（2023年から）／略取誘拐・人身売買／強制わいせつ（2022年まで）／不同意わいせつ（2023年から）／
+
+      重要窃盗犯総数／侵入盗／侵入盗（住宅対象）／侵入盗（その他）／自動車盗／ひったくり／すり／
+
+      主な街頭犯罪総数／器物損壊／住居侵入。主な街頭犯罪総数は路上強盗・部品ねらい・車上ねらい・
+
+      自動販売機ねらい・オートバイ盗・自転車盗の合計'
+  - name: prefecture_code
+    title: 都道府県コード
+    description: JIS X 0401 の2桁（01〜47）
+  - name: prefecture
+    title: 都道府県
+    description: 北海道は方面別の内訳を畳んだ道全体の値
+  - name: recognized_cases
+    title: 認知件数
+    description: 警察が発生を認知した事件の数
+  - name: cleared_cases
+    title: 検挙件数
+    description: 当年に検挙した事件の数。前年以前に認知した事件を含む
+  - name: arrested_persons
+    title: 検挙人員
+    description: 当年に検挙した被疑者の数
