@@ -7,9 +7,13 @@
 
 手口の区分は2度変わっている。令和2年に預貯金詐欺がオレオレ詐欺から分かれて10類型になり、
 令和8年にニセ警察詐欺が独立し、SNS型投資詐欺・SNS型ロマンス詐欺が特殊詐欺の手口に加わった。
-年別の確定値ファイルは令和2年の区分、最新ファイルは令和8年の区分で集計されている。
-最新ファイルは前年分も令和8年の区分で組み替えて載せるので、同じ年が2つの区分で重なる。
+各ファイルは当年と前年の表を持ち、前年の表も当年と同じ区分で集計されている。
+区分が変わった年のファイルは前年を新しい区分で組み替えて載せるので、2025年は2つの区分で重なる。
 どちらの区分かを classification_year（区分の適用開始年）で持ち、行を混ぜない。
+
+同じ区分×年の表が複数のファイルにあるときは、年別ファイルの当年の表、最新ファイルの表、
+年別ファイルの前年の表の順に採る。年別ファイルを足しても重ならず、区分が変わった年の組み替え分は
+最新ファイルが次の年に進んでも翌年の年別ファイルから採り続けられる。
 """
 
 import csv
@@ -25,8 +29,8 @@ import openpyxl
 
 BASE_URL = "https://www.npa.go.jp/bureau/criminal/souni/tokusyusagi/"
 
-# 年別の確定値ファイル。当年の表だけを採る（前年の表は前年のファイルが正）。
-# 2024 年分は訂正版が出ているので訂正版を使う。
+# 年別の確定値ファイル。2024 年分は訂正版が出ているので訂正版を使う。
+# 新しい年の確定値が公表されたらここに足す（上半期の暫定値のファイルは足さない）。
 # https://www.npa.go.jp/publications/statistics/sousa/sagi.html
 YEARLY_FILES = {
     2020: "tokushusagi_toukei2020.xlsx",
@@ -37,7 +41,7 @@ YEARLY_FILES = {
     2025: "hurikomesagi_toukei2025.xlsx",
 }
 
-# 最新の暫定値のファイル。当年（暫定・公表月まで）と前年（確定値を令和8年の区分で組み替えたもの）の2年を持つ。
+# 最新の暫定値のファイル。当年（暫定・公表月まで）と前年の2年を持つ。
 LATEST_FILE = "hurikomesagi_toukei.xlsx"
 
 FETCH_ATTEMPTS = 3
@@ -189,29 +193,39 @@ def _classification_year(blocks: list[dict]) -> int:
 
 
 def download_and_normalize(csv_path: Path) -> int:
-    rows = []
+    # (区分, 年) -> (優先順位, ファイル名, 行)。優先順位の小さい方を採る
+    tables: dict[tuple[int, int], tuple[int, str, list[list]]] = {}
+
+    def offer(rank: int, name: str, classification: int, year: int, blocks: list[dict], provisional: bool):
+        rows = [r for b in blocks for r in _to_rows(b, classification, provisional)]
+        key = (classification, year)
+        if key not in tables or rank < tables[key][0]:
+            tables[key] = (rank, name, rows)
+
+    first_year = min(YEARLY_FILES)
     for year, name in YEARLY_FILES.items():
         blocks = _parse_blocks(_fetch(BASE_URL + name))
+        classification = _classification_year(blocks)
         own = [b for b in blocks if b["year"] == year]
         if not own:
             raise ValueError(f"{name}: {year} 年の表が見つからない")
-        classification = _classification_year(blocks)
-        year_rows = [r for b in own for r in _to_rows(b, classification, provisional=False)]
-        print(f"  {name}: {len(own)} modus, {len(year_rows)} rows")
-        rows.extend(year_rows)
+        offer(0, name, classification, year, own, provisional=False)
+        # 収録開始より前の年は区分が違っても組み替えられていないので採らない
+        prior = [b for b in blocks if b["year"] == year - 1]
+        if prior and year - 1 >= first_year:
+            offer(2, name, classification, year - 1, prior, provisional=False)
 
     blocks = _parse_blocks(_fetch(BASE_URL + LATEST_FILE))
     classification = _classification_year(blocks)
     current = max(b["year"] for b in blocks)
-    latest_rows = [
-        r for b in blocks for r in _to_rows(b, classification, provisional=b["year"] == current)
-    ]
-    print(f"  {LATEST_FILE}: {current} (provisional) + {current - 1}, {len(latest_rows)} rows")
-    rows.extend(latest_rows)
+    for year in sorted({b["year"] for b in blocks}):
+        offer(1, LATEST_FILE, classification, year,
+              [b for b in blocks if b["year"] == year], provisional=year == current)
 
-    keys = [(r[0], r[1], r[2], r[3]) for r in rows]
-    if len(keys) != len(set(keys)):
-        raise ValueError("区分×年×月×手口が重複している")
+    rows = []
+    for (classification, year), (_, name, table_rows) in sorted(tables.items()):
+        print(f"  {classification} {year}: {name}, {len(table_rows)} rows")
+        rows.extend(table_rows)
 
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)

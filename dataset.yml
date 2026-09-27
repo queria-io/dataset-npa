@@ -44,7 +44,7 @@ contributors:
   - title: 青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察
     roles: [rightsHolder]
 
-temporal_coverage: { start: "2020-01-01", end: "2026-07-31" }
+temporal_coverage: { start: "2020-01-01", end: null }
 spatial_coverage: [JP]
 update_frequency: yearly
 cover: 🚨
