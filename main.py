@@ -6,7 +6,9 @@
            統合した UTF-8 CSV へ整形する。
 3. crime_stats: 警察庁 犯罪統計資料（確定値）の都道府県別表を取得し、
            罪種×地域の縦持ち CSV へ整形する。
-4. dbt:    dbt ビルド。
+4. fraud_stats: 警察庁 特殊詐欺の認知・検挙状況等の手口別・月別表を取得し、
+           手口×年月の CSV へ整形する。
+5. dbt:    dbt ビルド。
 """
 
 import logging
@@ -16,6 +18,7 @@ from dbt.cli.main import dbtRunner
 
 import crime
 import crime_stats
+import fraud_stats
 import honhyo
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -25,6 +28,7 @@ WORK_DIR = Path(".queria")
 CSV_PATH = WORK_DIR / "npa_honhyo.csv"
 CRIME_CSV_PATH = WORK_DIR / "npa_crime.csv"
 CRIME_STATS_CSV_PATH = WORK_DIR / "npa_crime_stats.csv"
+FRAUD_STATS_CSV_PATH = WORK_DIR / "npa_fraud_stats.csv"
 
 
 def dbt_build() -> None:
@@ -38,19 +42,23 @@ def dbt_build() -> None:
 def main() -> None:
     WORK_DIR.mkdir(exist_ok=True)
 
-    logger.info("1/4: honhyo (交通事故 本票)")
+    logger.info("1/5: honhyo (交通事故 本票)")
     rows = honhyo.download_and_normalize(CSV_PATH)
     logger.info(f"  npa_honhyo.csv: {rows} rows")
 
-    logger.info("2/4: crime (犯罪発生情報)")
+    logger.info("2/5: crime (犯罪発生情報)")
     rows = crime.download_and_normalize(CRIME_CSV_PATH)
     logger.info(f"  npa_crime.csv: {rows} rows")
 
-    logger.info("3/4: crime_stats (犯罪統計資料)")
+    logger.info("3/5: crime_stats (犯罪統計資料)")
     rows = crime_stats.download_and_normalize(CRIME_STATS_CSV_PATH)
     logger.info(f"  npa_crime_stats.csv: {rows} rows")
 
-    logger.info("4/4: dbt build")
+    logger.info("4/5: fraud_stats (特殊詐欺の認知・検挙状況)")
+    rows = fraud_stats.download_and_normalize(FRAUD_STATS_CSV_PATH)
+    logger.info(f"  npa_fraud_stats.csv: {rows} rows")
+
+    logger.info("5/5: dbt build")
     dbt_build()
 
 
