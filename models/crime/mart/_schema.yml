@@ -53,3 +53,24 @@ models:
       - name: recognized_cases
       - name: cleared_cases
       - name: arrested_persons
+
+  - name: special_fraud
+    description: |
+      警察庁「特殊詐欺の認知・検挙状況等について」の全国の手口別・月別の認知件数・被害額・検挙件数・検挙人員。
+      1区分×1か月×1手口で1行。2020年から最新の公表月まで。
+      出典: 警察庁 特殊詐欺の認知・検挙状況等について。
+      https://www.npa.go.jp/publications/statistics/sousa/sagi.html
+    access: public
+    columns:
+      - name: classification_year
+      - name: year
+      - name: month
+      - name: month_start
+      - name: modus
+      - name: is_provisional
+      - name: recognized_cases
+      - name: completed_cases
+      - name: damage_amount_yen
+      - name: completed_damage_amount_yen
+      - name: cleared_cases
+      - name: arrested_persons
