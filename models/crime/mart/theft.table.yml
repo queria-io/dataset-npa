@@ -45,10 +45,12 @@ fields:
   - name: city_code
     title: 市区町村コード（発生地）
     description: JIS 市区町村コード6桁（チェックデジット付き）。政令指定都市は区コード
+    semantic: { role: entity, name: city }
   - name: city
     title: 市区町村（発生地）
   - name: town
     title: 町丁目（発生地）
+    semantic: { role: entity, name: small_area }
   - name: occurred_date
     title: 発生年月日（始期）
     description: '発生日が「不明」のレコードは NULL。データは認知年（data_year）単位の公開のため、

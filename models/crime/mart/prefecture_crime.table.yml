@@ -54,6 +54,7 @@ fields:
   - name: prefecture_code
     title: 都道府県コード
     description: JIS X 0401 の2桁（01〜47）
+    semantic: { role: entity, name: prefecture }
   - name: prefecture
     title: 都道府県
     description: 北海道は方面別の内訳を畳んだ道全体の値
