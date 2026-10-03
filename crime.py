@@ -15,9 +15,12 @@
 import csv
 import http.client
 import io
+import re
 import time
+import unicodedata
 import urllib.error
 import urllib.request
+from collections.abc import Callable
 from pathlib import Path
 
 # 対象年（各県警の公開年別ファイル）。現在は令和6年で県横断比較できるよう統一。
@@ -60,7 +63,7 @@ OUTPUT_COLUMNS = [*COLUMN_MAP.values(), "source_prefecture", "data_year"]
 _OSAKA = "https://www.police.pref.osaka.lg.jp/material/files/group/2"
 _AICHI = "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images"
 _KANAGAWA = "https://www.police.pref.kanagawa.jp/assets/entry"
-_CHIBA = "https://www.police.pref.chiba.jp/content/common"
+_CHIBA = "https://www.police.pref.chiba.jp"
 _AOMORI = "https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/csv"
 _FUKUSHIMA = "https://www.police.pref.fukushima.jp/seianki/homepage/top_page"
 _SAITAMA = "https://www.police.pref.saitama.lg.jp/documents/33251"
@@ -72,7 +75,7 @@ _MODUS = ("hittakuri", "syazyounerai", "buhinnerai", "zidouhanbaikinerai",
 
 # 県警別・手口別の年別 CSV。キーは手口スラッグ（警察庁リンク集の各県共通命名）。
 # BODIK 掲載県（栃木・京都・佐賀・宮崎・鹿児島）はリソース URL が UUID 固定。
-SOURCES: list[tuple[str, int, dict[str, str]]] = [
+SOURCES: list[tuple[str, int, dict[str, str] | Callable[[], dict[str, str]]]] = [
     # 青森県は車上ねらいだけファイル名が syajyounerai（他県は syazyounerai）。
     ("青森県", 2024, {
         m: f"{_AOMORI}/2024/aomori_2024{'syajyounerai' if m == 'syazyounerai' else m}.csv"
@@ -95,16 +98,7 @@ SOURCES: list[tuple[str, int, dict[str, str]]] = [
         m: f"{_SAITAMA}/saitama_2024{m}.csv"
         for m in _MODUS
     }),
-    # 千葉県はファイル差し替え時に URL の連番が振り直され、旧番号は 404 になる。
-    ("千葉県", 2024, {
-        "hittakuri": f"{_CHIBA}/000074763.csv",
-        "syazyounerai": f"{_CHIBA}/000074764.csv",
-        "buhinnerai": f"{_CHIBA}/000074765.csv",
-        "zidouhanbaikinerai": f"{_CHIBA}/000074766.csv",
-        "zidousyatou": f"{_CHIBA}/000074767.csv",
-        "ootobaitou": f"{_CHIBA}/000074768.csv",
-        "zitensyatou": f"{_CHIBA}/000074769.csv",
-    }),
+    ("千葉県", 2024, lambda: _chiba_urls(2024)),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
         for m in _MODUS
@@ -177,6 +171,45 @@ def _fetch(url: str) -> bytes:
     raise AssertionError("unreachable")
 
 
+# 千葉県は CSV を /content/common/<連番>.csv に置き、ファイルを差し替えるたびに
+# 連番を振り直す（旧番号は 404）。年が替わると前年分は年別ページへ移り、そこでも
+# 振り直される。固定 URL を持たず、オープンデータページから年別ページを辿って拾う
+_CHIBA_INDEX = f"{_CHIBA}/seisoka/safe-life_publicspace-statistics_00002.html"
+_CHIBA_LABELS = {
+    "ひったくり": "hittakuri",
+    "車上ねらい": "syazyounerai",
+    "部品ねらい": "buhinnerai",
+    "自動販売機ねらい": "zidouhanbaikinerai",
+    "自動車盗": "zidousyatou",
+    "オートバイ盗": "ootobaitou",
+    "自転車盗": "zitensyatou",
+}
+
+
+def _fetch_html(url: str) -> str:
+    # 千葉県警のページは全角と半角の数字が混在する（「令和6年中」「令和６年中」）
+    return unicodedata.normalize("NFKC", _fetch(url).decode("utf-8"))
+
+
+def _chiba_urls(year: int) -> dict[str, str]:
+    """千葉県警の年別ページから、指定年の手口別 CSV の URL を拾う。"""
+    era = "令和元年" if year == 2019 else f"令和{year - 2018}年"
+    index = _fetch_html(_CHIBA_INDEX)
+    page = re.search(rf'<a href="([^"]+)">\s*オープンデータ\s*{era}中\s*</a>', index)
+    if not page:
+        raise ValueError(f"千葉県: {era}中のページへのリンクが見つからない")
+    html = _fetch_html(f"{_CHIBA}{page.group(1)}")
+    urls = {
+        _CHIBA_LABELS[label]: f"{_CHIBA}{href}"
+        for href, label in re.findall(r'<a href="(/content/common/\d+\.csv)">([^(<]+)\(', html)
+        if label in _CHIBA_LABELS
+    }
+    # 手口ごとに別のファイルを指しているか確かめる。同じ番号へのリンクの誤りが掲載されたことがある
+    if set(urls) != set(_MODUS) or len(set(urls.values())) != len(_MODUS):
+        raise ValueError(f"千葉県: {era}中の手口別 CSV が揃っていない {urls}")
+    return urls
+
+
 def _decode_and_split(raw: bytes) -> list[list[str]]:
     """エンコーディングと区切り文字をファイル単位で判定し、行リストへ分解する。
 
@@ -221,6 +254,8 @@ def download_and_normalize(csv_path: Path) -> int:
 
     all_rows: list[list[str]] = []
     for prefecture, year, urls in SOURCES:
+        if callable(urls):
+            urls = urls()
         pref_count = 0
         for modus, url in urls.items():
             rows = _decode_and_split(_fetch(url))
