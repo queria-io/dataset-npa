@@ -30,7 +30,7 @@ DATA_YEAR = 2024
 # BODIK (data.bodik.jp) は短間隔の連続アクセスを 403 で一時ブロックするため控えめにする
 REQUEST_INTERVAL_SEC = 2.0
 
-# 13 提供元から 91 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
+# 12 提供元から 84 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
 # 接続断とタイムアウトは間を空けて取り直す
 FETCH_ATTEMPTS = 3
 FETCH_BACKOFF_SEC = 5.0
@@ -61,7 +61,6 @@ COLUMN_MAP = {
 OUTPUT_COLUMNS = [*COLUMN_MAP.values(), "source_prefecture", "data_year"]
 
 _OSAKA = "https://www.police.pref.osaka.lg.jp/material/files/group/2"
-_AICHI = "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images"
 _KANAGAWA = "https://www.police.pref.kanagawa.jp/assets/entry"
 _CHIBA = "https://www.police.pref.chiba.jp"
 _AOMORI = "https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/csv"
@@ -101,10 +100,6 @@ SOURCES: list[tuple[str, int, dict[str, str] | Callable[[], dict[str, str]]]] = 
     ("千葉県", 2024, lambda: _chiba_urls(2024)),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
-        for m in _MODUS
-    }),
-    ("愛知県", 2024, {
-        m: f"{_AICHI}/aichi-2024{m}.csv"
         for m in _MODUS
     }),
     ("京都府", 2024, {
