@@ -98,3 +98,92 @@ models:
         description: 検挙件数
       - name: arrested_persons
         description: 検挙人員
+
+  - name: raw_town_crime
+    description: |
+      警視庁 区市町村の町丁別、罪種別及び手口別認知件数（年累計）の生データ。
+      2009〜2016年の Excel（区市町村ごとのシート）と2017年以降の CSV から町丁字の行を取り出したもの。
+      区市町村計・地域計・合計と、他県・海外認知・不明の行は含まない。
+    columns:
+      - name: year
+        description: 対象年（西暦。1〜12月の年累計）
+      - name: city_code
+        description: 全国地方公共団体コード6桁
+      - name: municipality
+        description: 区市町村名（郡名・島名を外した正式名）
+      - name: town
+        description: 区市町村名を除いた町丁字名。区市町村名だけの行は NULL
+      - name: total
+        description: 総合計
+      - name: heinous_total
+        description: 凶悪犯計
+      - name: heinous_robbery
+        description: 凶悪犯強盗
+      - name: heinous_other
+        description: 凶悪犯その他
+      - name: violent_total
+        description: 粗暴犯計
+      - name: violent_unlawful_assembly
+        description: 粗暴犯凶器準備集合
+      - name: violent_assault
+        description: 粗暴犯暴行
+      - name: violent_injury
+        description: 粗暴犯傷害
+      - name: violent_intimidation
+        description: 粗暴犯脅迫
+      - name: violent_extortion
+        description: 粗暴犯恐喝
+      - name: burglary_total
+        description: 侵入窃盗計
+      - name: burglary_safe
+        description: 侵入窃盗金庫破り
+      - name: burglary_school
+        description: 侵入窃盗学校荒し
+      - name: burglary_office
+        description: 侵入窃盗事務所荒し
+      - name: burglary_shop
+        description: 侵入窃盗出店荒し
+      - name: burglary_vacant_house
+        description: 侵入窃盗空き巣
+      - name: burglary_night
+        description: 侵入窃盗忍込み
+      - name: burglary_occupied_house
+        description: 侵入窃盗居空き
+      - name: burglary_other
+        description: 侵入窃盗その他
+      - name: non_burglary_total
+        description: 非侵入窃盗計
+      - name: non_burglary_car
+        description: 非侵入窃盗自動車盗
+      - name: non_burglary_motorcycle
+        description: 非侵入窃盗オートバイ盗
+      - name: non_burglary_bicycle
+        description: 非侵入窃盗自転車盗
+      - name: non_burglary_from_car
+        description: 非侵入窃盗車上ねらい
+      - name: non_burglary_vending_machine
+        description: 非侵入窃盗自販機ねらい
+      - name: non_burglary_construction_site
+        description: 非侵入窃盗工事場ねらい
+      - name: non_burglary_pickpocket
+        description: 非侵入窃盗すり
+      - name: non_burglary_snatching
+        description: 非侵入窃盗ひったくり
+      - name: non_burglary_unattended
+        description: 非侵入窃盗置引き
+      - name: non_burglary_shoplifting
+        description: 非侵入窃盗万引き
+      - name: non_burglary_other
+        description: 非侵入窃盗その他
+      - name: other_total
+        description: その他計
+      - name: other_fraud
+        description: その他詐欺
+      - name: other_embezzlement_lost_property
+        description: その他占有離脱物横領
+      - name: other_intellectual
+        description: その他その他知能犯
+      - name: other_gambling
+        description: その他賭博
+      - name: other_penal_code
+        description: その他その他刑法犯

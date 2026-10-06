@@ -13,6 +13,9 @@
 - [警察庁 特殊詐欺の認知・検挙状況等について](https://www.npa.go.jp/publications/statistics/sousa/sagi.html):
   警察庁が公表する特殊詐欺の統計データ（Excel）から、全国の手口別・月別の認知件数・被害額・検挙件数・
   検挙人員を収録します。
+- [警視庁 区市町村の町丁別、罪種別及び手口別認知件数](https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html):
+  警視庁が年1回公表する東京都内の町丁字別の認知件数（2009〜2016年は Excel、2017年以降は CSV）から、
+  罪種・手口の37区分の件数を収録します。
 
 ## スキーマ: main
 
@@ -147,10 +150,63 @@ theft（12府県・町丁目単位）の件数を全国の中で位置づける�
 modus が「特殊詐欺」の行は全手口の合計なので、手口の行と足し合わせないでください。
 形態（文言）別の内訳表と、組織的犯罪処罰法違反などの関連法令の表は収録しません。
 
+### テーブル: tokyo_town_crime
+
+警視庁の町丁字別・罪種別・手口別の認知件数（年累計）です。1年×1町丁字で1行、2009年から2025年まで、
+1年あたり約5,000〜5,200町丁字を収録します。認知が0件の町丁字は行がありません。
+
+- year: 対象年（INTEGER、西暦。1〜12月の年累計）
+- city_code: 市区町村コード（VARCHAR、全国地方公共団体コード6桁）
+- municipality: 区市町村（VARCHAR、原表の郡名・島名を外した名前）
+- town: 町丁字（VARCHAR、区市町村名と全角空白を除いた原表の文字列。丁目の数字は全角。「以下不詳」は町丁字が不明の認知、
+  NULL は区市町村名だけの行で、檜原村・神津島村・利島村・青ヶ島村・御蔵島村の5村にだけある）
+- total: 総合計（INTEGER）
+- heinous_total: 凶悪犯計（INTEGER）
+- heinous_robbery: 凶悪犯強盗（INTEGER）
+- heinous_other: 凶悪犯その他（INTEGER）
+- violent_total: 粗暴犯計（INTEGER）
+- violent_unlawful_assembly: 粗暴犯凶器準備集合（INTEGER）
+- violent_assault: 粗暴犯暴行（INTEGER）
+- violent_injury: 粗暴犯傷害（INTEGER）
+- violent_intimidation: 粗暴犯脅迫（INTEGER）
+- violent_extortion: 粗暴犯恐喝（INTEGER）
+- burglary_total: 侵入窃盗計（INTEGER）
+- burglary_safe: 侵入窃盗金庫破り（INTEGER）
+- burglary_school: 侵入窃盗学校荒し（INTEGER）
+- burglary_office: 侵入窃盗事務所荒し（INTEGER）
+- burglary_shop: 侵入窃盗出店荒し（INTEGER）
+- burglary_vacant_house: 侵入窃盗空き巣（INTEGER）
+- burglary_night: 侵入窃盗忍込み（INTEGER）
+- burglary_occupied_house: 侵入窃盗居空き（INTEGER）
+- burglary_other: 侵入窃盗その他（INTEGER）
+- non_burglary_total: 非侵入窃盗計（INTEGER）
+- non_burglary_car: 非侵入窃盗自動車盗（INTEGER）
+- non_burglary_motorcycle: 非侵入窃盗オートバイ盗（INTEGER）
+- non_burglary_bicycle: 非侵入窃盗自転車盗（INTEGER）
+- non_burglary_from_car: 非侵入窃盗車上ねらい（INTEGER）
+- non_burglary_vending_machine: 非侵入窃盗自販機ねらい（INTEGER）
+- non_burglary_construction_site: 非侵入窃盗工事場ねらい（INTEGER）
+- non_burglary_pickpocket: 非侵入窃盗すり（INTEGER）
+- non_burglary_snatching: 非侵入窃盗ひったくり（INTEGER）
+- non_burglary_unattended: 非侵入窃盗置引き（INTEGER）
+- non_burglary_shoplifting: 非侵入窃盗万引き（INTEGER）
+- non_burglary_other: 非侵入窃盗その他（INTEGER）
+- other_total: その他計（INTEGER）
+- other_fraud: その他詐欺（INTEGER）
+- other_embezzlement_lost_property: その他占有離脱物横領（INTEGER）
+- other_intellectual: その他その他知能犯（INTEGER）
+- other_gambling: その他賭博（INTEGER）
+- other_penal_code: その他その他刑法犯（INTEGER）
+
+総合計は罪種の計（凶悪犯計・粗暴犯計・侵入窃盗計・非侵入窃盗計・その他計）の合計、罪種の計はその手口の合計で、
+取得時に全行で一致を確かめています。区市町村計と都全体の合計の行も、町丁字の行の合計と突き合わせたうえで
+収録から外しています。発生地が都外（他県）・海外・不明の認知は町丁字に属さないので収録しません。
+そのため町丁字を合計しても都全体の認知件数とは一致しません。当年の月累計（年途中の値）は収録しません。
+
 ## データ更新手順
 
-main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯罪発生情報 CSV、犯罪統計資料と特殊詐欺の統計の Excel を
-取得して UTF-8 へ正規化し、dbt build で各テーブルを再生成する。ビルドは `bash scripts/build.sh` で実行する（Queria に公開する）。
+main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯罪発生情報 CSV、犯罪統計資料と特殊詐欺の統計の Excel、
+警視庁の町丁別認知件数の Excel / CSV を取得して UTF-8 へ正規化し、dbt build で各テーブルを再生成する。ビルドは `bash scripts/build.sh` で実行する（Queria に公開する）。
 
 ## ライセンス
 
@@ -158,6 +214,9 @@ main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯�
 [公共データ利用規約（第1.0版）（PDL1.0）](https://www.npa.go.jp/rules/index.html)に従う。
 
 犯罪統計資料は、[政府統計の総合窓口（e-Stat）利用規約（政府標準利用規約（第2.0版）準拠）](https://www.e-stat.go.jp/terms-of-use)に従う。
+
+警視庁の町丁別認知件数は、[東京都オープンデータカタログサイト](https://catalog.data.metro.tokyo.lg.jp/dataset/t000022d0000100001)に
+掲載された [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja) に従う。
 
 犯罪発生情報は、公表元の各都道府県警察の利用規約に従う。いずれも商用利用・再配布可
 （出典記載が条件）を確認済み。
