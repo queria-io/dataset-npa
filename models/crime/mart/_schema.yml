@@ -74,3 +74,53 @@ models:
       - name: completed_damage_amount_yen
       - name: cleared_cases
       - name: arrested_persons
+
+  - name: tokyo_town_crime
+    description: |
+      警視庁「区市町村の町丁別、罪種別及び手口別認知件数」の年累計。1年×1町丁字で1行。2009年から2025年まで。
+      刑法犯の認知件数を罪種と手口の37区分で持つ。認知が0件の町丁字は行が無い。
+      出典: 警視庁 区市町村の町丁別、罪種別及び手口別認知件数。
+      https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
+    access: public
+    columns:
+      - name: year
+      - name: city_code
+      - name: municipality
+      - name: town
+      - name: total
+      - name: heinous_total
+      - name: heinous_robbery
+      - name: heinous_other
+      - name: violent_total
+      - name: violent_unlawful_assembly
+      - name: violent_assault
+      - name: violent_injury
+      - name: violent_intimidation
+      - name: violent_extortion
+      - name: burglary_total
+      - name: burglary_safe
+      - name: burglary_school
+      - name: burglary_office
+      - name: burglary_shop
+      - name: burglary_vacant_house
+      - name: burglary_night
+      - name: burglary_occupied_house
+      - name: burglary_other
+      - name: non_burglary_total
+      - name: non_burglary_car
+      - name: non_burglary_motorcycle
+      - name: non_burglary_bicycle
+      - name: non_burglary_from_car
+      - name: non_burglary_vending_machine
+      - name: non_burglary_construction_site
+      - name: non_burglary_pickpocket
+      - name: non_burglary_snatching
+      - name: non_burglary_unattended
+      - name: non_burglary_shoplifting
+      - name: non_burglary_other
+      - name: other_total
+      - name: other_fraud
+      - name: other_embezzlement_lost_property
+      - name: other_intellectual
+      - name: other_gambling
+      - name: other_penal_code

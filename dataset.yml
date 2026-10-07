@@ -6,7 +6,8 @@ description: |-
   交通事故統計情報（発生日時・地点の緯度経度・事故内容・天候・事故類型など）と、
   犯罪発生情報（街頭犯罪7手口の町丁目単位・1認知件1レコード）と、
   犯罪統計資料（全都道府県の罪種別の認知件数・検挙件数・検挙人員）と、
-  特殊詐欺の認知・検挙状況（全国の手口別・月別の認知件数・被害額・検挙件数）を収録する。
+  特殊詐欺の認知・検挙状況（全国の手口別・月別の認知件数・被害額・検挙件数）と、
+  警視庁の町丁字別・罪種別・手口別の認知件数（東京都・2009年から）を収録する。
 keywords:
   - 警察庁
   - 都道府県警察
@@ -21,6 +22,8 @@ keywords:
   - GIS
   - 緯度経度
   - 町丁目
+  - 警視庁
+  - 東京都
 homepage: https://github.com/queria-io/dataset-npa
 language: ja
 
@@ -36,15 +39,20 @@ sources:
     path: https://www.npa.go.jp/publications/statistics/sousa/statistics.html
   - title: 特殊詐欺の認知・検挙状況等について（警察庁）
     path: https://www.npa.go.jp/publications/statistics/sousa/sagi.html
+  - title: 区市町村の町丁別、罪種別及び手口別認知件数（警視庁）
+    path: https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
 
 contributors:
   - title: 警察庁
     path: https://www.npa.go.jp/
     roles: [rightsHolder]
+  - title: 警視庁
+    path: https://www.keishicho.metro.tokyo.lg.jp/
+    roles: [rightsHolder]
   - title: 青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察
     roles: [rightsHolder]
 
-temporal_coverage: { start: "2020-01-01", end: null }
+temporal_coverage: { start: "2009-01-01", end: null }
 spatial_coverage: [JP]
 update_frequency: yearly
 cover: 🚨
@@ -74,13 +82,19 @@ ai_context:
     手口の区分は classification_year で2通りに分かれ、2025年は両方に入っている。
     区分をまたいで連結・合計しない。modus が「特殊詐欺」の行は全手口の合計。
     当年は暫定値（is_provisional）。
-  synonyms: [交通事故, 人身事故, 犯罪発生情報, 街頭犯罪, ひったくり, 自転車盗, 犯罪統計, 刑法犯, 検挙率, 特殊詐欺, 振り込め詐欺, ニセ警察詐欺]
+    crime.tokyo_town_crime は警視庁の町丁字別の認知件数で、東京都内の刑法犯を罪種・手口の37区分で
+    2009年から年単位で持つ。1年×1町丁字で1行、認知が0件の町丁字は行が無い。
+    crime.theft は東京を含まないので、東京の町丁目単位の犯罪はこちらを使う。
+    town は原表の町丁字名（丁目は全角数字）で、city_code は全国地方公共団体コード6桁。
+    総合計（total）は罪種の計（*_total）の合計で、罪種の計は手口の合計。計と手口を足し合わせない。
+  synonyms: [交通事故, 人身事故, 犯罪発生情報, 街頭犯罪, ひったくり, 自転車盗, 犯罪統計, 刑法犯, 検挙率, 特殊詐欺, 振り込め詐欺, ニセ警察詐欺, 空き巣, 侵入窃盗, 町丁字別犯罪]
   examples:
     - 市区町村別の交通事故の件数を出したい
     - 時間帯別・天候別の事故の起きやすさを見たい
     - 自転車盗が多い町丁目を調べたい
     - 都道府県別の刑法犯の認知件数と検挙率の推移を見たい
     - 特殊詐欺の手口別の被害額を月ごとに追いたい
+    - 東京都の町丁目ごとに空き巣の件数の推移を見たい
 
 schemas:
   - name: main

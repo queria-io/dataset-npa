@@ -1,0 +1,124 @@
+schema: crime
+name: tokyo_town_crime
+title: 東京都の町丁字別・罪種別・手口別の認知件数
+description: |-
+  警視庁「区市町村の町丁別、罪種別及び手口別認知件数」の年累計。東京都内で認知した刑法犯の件数を、
+  町丁字ごとに罪種（凶悪犯・粗暴犯・侵入窃盗・非侵入窃盗・その他）と手口の37区分で持つ。
+  1年×1町丁字で1行。2009年から2025年まで、1年あたり約5,000〜5,200町丁字。
+  認知が0件の町丁字は行が無い。行が無い町丁字は0件として扱う。
+  発生地が都外（他県）・海外・不明の認知は町丁字に属さないので収録しない。そのため町丁字を合計しても
+  警視庁の公表する都全体の認知件数とは一致しない（差は年に数百件）。
+  town が「以下不詳」の行は区市町村までしか分からない認知。town が NULL の行は原表で区市町村名だけが
+  書かれた行で、檜原村・神津島村・利島村・青ヶ島村・御蔵島村の5村にだけある。
+  町丁字は原表の文字列から全角空白を除いたもので、丁目の数字は全角。町丁字の新設・廃止で年ごとに顔ぶれが変わる。
+  総合計は罪種の計の合計、罪種の計はその手口の合計と一致する（取得時に全行で確認済み）。
+  当年の月累計（年途中の値）は収録しない。
+  https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
+keywords:
+  - 警視庁
+  - 東京都
+  - 犯罪
+  - 認知件数
+  - 町丁目
+  - 町丁字
+  - 罪種
+  - 手口
+  - 侵入窃盗
+  - 自転車盗
+  - 万引き
+  - 治安
+published: true
+licenses:
+  - CC-BY-4.0
+sources:
+  - path: https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
+fields:
+  - name: year
+    title: 対象年
+    description: 西暦。1〜12月の年累計
+  - name: city_code
+    title: 市区町村コード
+    description: 全国地方公共団体コード6桁（チェックデジット付き）
+    semantic: { role: entity, name: city }
+  - name: municipality
+    title: 区市町村
+    description: 区市町村名。原表の郡名・島名（西多摩郡・三宅島など）は外してある
+  - name: town
+    title: 町丁字
+    description: 区市町村名を除いた町丁字名。「以下不詳」は町丁字が不明の認知、NULL は区市町村名だけの行
+    semantic: { role: entity, name: small_area }
+  - name: total
+    title: 総合計
+    description: 刑法犯の認知件数の合計
+  - name: heinous_total
+    title: 凶悪犯計
+  - name: heinous_robbery
+    title: 凶悪犯（強盗）
+  - name: heinous_other
+    title: 凶悪犯（その他）
+  - name: violent_total
+    title: 粗暴犯計
+  - name: violent_unlawful_assembly
+    title: 粗暴犯（凶器準備集合）
+  - name: violent_assault
+    title: 粗暴犯（暴行）
+  - name: violent_injury
+    title: 粗暴犯（傷害）
+  - name: violent_intimidation
+    title: 粗暴犯（脅迫）
+  - name: violent_extortion
+    title: 粗暴犯（恐喝）
+  - name: burglary_total
+    title: 侵入窃盗計
+  - name: burglary_safe
+    title: 侵入窃盗（金庫破り）
+  - name: burglary_school
+    title: 侵入窃盗（学校荒し）
+  - name: burglary_office
+    title: 侵入窃盗（事務所荒し）
+  - name: burglary_shop
+    title: 侵入窃盗（出店荒し）
+  - name: burglary_vacant_house
+    title: 侵入窃盗（空き巣）
+  - name: burglary_night
+    title: 侵入窃盗（忍込み）
+  - name: burglary_occupied_house
+    title: 侵入窃盗（居空き）
+  - name: burglary_other
+    title: 侵入窃盗（その他）
+  - name: non_burglary_total
+    title: 非侵入窃盗計
+  - name: non_burglary_car
+    title: 非侵入窃盗（自動車盗）
+  - name: non_burglary_motorcycle
+    title: 非侵入窃盗（オートバイ盗）
+  - name: non_burglary_bicycle
+    title: 非侵入窃盗（自転車盗）
+  - name: non_burglary_from_car
+    title: 非侵入窃盗（車上ねらい）
+  - name: non_burglary_vending_machine
+    title: 非侵入窃盗（自販機ねらい）
+  - name: non_burglary_construction_site
+    title: 非侵入窃盗（工事場ねらい）
+  - name: non_burglary_pickpocket
+    title: 非侵入窃盗（すり）
+  - name: non_burglary_snatching
+    title: 非侵入窃盗（ひったくり）
+  - name: non_burglary_unattended
+    title: 非侵入窃盗（置引き）
+  - name: non_burglary_shoplifting
+    title: 非侵入窃盗（万引き）
+  - name: non_burglary_other
+    title: 非侵入窃盗（その他）
+  - name: other_total
+    title: その他計
+  - name: other_fraud
+    title: その他（詐欺）
+  - name: other_embezzlement_lost_property
+    title: その他（占有離脱物横領）
+  - name: other_intellectual
+    title: その他（その他知能犯）
+  - name: other_gambling
+    title: その他（賭博）
+  - name: other_penal_code
+    title: その他（その他刑法犯）
