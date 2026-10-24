@@ -26,6 +26,7 @@ keywords:
   - 東京都
 homepage: https://github.com/queria-io/dataset-npa
 language: ja
+themes: [justice_safety_environment]
 
 licenses:
   - JP-PDL-1.0
