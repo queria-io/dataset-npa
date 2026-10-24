@@ -8,7 +8,7 @@
 - 都道府県警察の犯罪発生情報（発見起点: [警察庁 犯罪オープンデータ リンク集](https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html)）:
   各都道府県警察が警察庁標準様式で公開する街頭犯罪の認知情報を、1認知件1レコード・町丁目単位で収録します。
 - [警察庁 犯罪統計](https://www.npa.go.jp/publications/statistics/sousa/statistics.html):
-  警察庁が年1回公表する犯罪統計資料（1～12月分の確定値、政府統計の総合窓口 e-Stat 掲載の Excel）から、
+  警察庁が年1回公表する犯罪統計資料（1～12月分の確定値、政府統計の総合窓口 e-Stat 掲載の CSV）から、
   全都道府県の罪種別の認知件数・検挙件数・検挙人員を収録します。
 - [警察庁 特殊詐欺の認知・検挙状況等について](https://www.npa.go.jp/publications/statistics/sousa/sagi.html):
   警察庁が公表する特殊詐欺の統計データ（Excel）から、全国の手口別・月別の認知件数・被害額・検挙件数・
@@ -205,7 +205,7 @@ modus が「特殊詐欺」の行は全手口の合計なので、手口の行�
 
 ## データ更新手順
 
-main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯罪発生情報 CSV、犯罪統計資料と特殊詐欺の統計の Excel、
+main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯罪発生情報 CSV、犯罪統計資料の CSV と特殊詐欺の統計の Excel、
 警視庁の町丁別認知件数の Excel / CSV を取得して UTF-8 へ正規化し、dbt build で各テーブルを再生成する。ビルドは `bash scripts/build.sh` で実行する（Queria に公開する）。
 
 ## ライセンス

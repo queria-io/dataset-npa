@@ -58,7 +58,7 @@ models:
       - name: year
         description: 対象年（西暦。1～12月の確定値）
       - name: crime_type
-        description: 罪種。原表のシートに対応し、公表どおりの名前で持つ
+        description: 罪種。原表の表に対応し、公表どおりの名前で持つ
       - name: area_group
         description: 原表の1列目（地方名。全国の行は「全国」、東京都は単独で「東京都」）
       - name: area
