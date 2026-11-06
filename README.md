@@ -1,25 +1,72 @@
-## データ出典
+# 警察庁・都道府県警察 犯罪・交通事故統計
 
-警察庁と都道府県警察が公開する犯罪・交通事故のオープンデータです。
+警察庁・警視庁・都道府県警察が公開する交通事故と犯罪のオープンデータを、SQL で検索・集計できるテーブルにしたデータセットです。交通事故は 1 件ごとの地点、犯罪は町丁目単位の発生情報と都道府県別・全国の統計を持ちます。
 
-- [警察庁 交通事故統計情報のオープンデータ](https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html):
-  死傷者を伴う交通事故を1件1レコードで収録し、発生日時・地点（緯度経度）・事故内容・天候・路面状態・
-  道路形状・事故類型などを持ちます。緯度経度を持つため地図上での事故分析（GIS）に利用できます。
-- 都道府県警察の犯罪発生情報（発見起点: [警察庁 犯罪オープンデータ リンク集](https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html)）:
-  各都道府県警察が警察庁標準様式で公開する街頭犯罪の認知情報を、1認知件1レコード・町丁目単位で収録します。
-- [警察庁 犯罪統計](https://www.npa.go.jp/publications/statistics/sousa/statistics.html):
-  警察庁が年1回公表する犯罪統計資料（1～12月分の確定値、政府統計の総合窓口 e-Stat 掲載の CSV）から、
-  全都道府県の罪種別の認知件数・検挙件数・検挙人員を収録します。
-- [警察庁 特殊詐欺の認知・検挙状況等について](https://www.npa.go.jp/publications/statistics/sousa/sagi.html):
-  警察庁が公表する特殊詐欺の統計データ（Excel）から、全国の手口別・月別の認知件数・被害額・検挙件数・
-  検挙人員を収録します。
-- [警視庁 区市町村の町丁別、罪種別及び手口別認知件数](https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html):
-  警視庁が年1回公表する東京都内の町丁字別の認知件数（2009〜2016年は Excel、2017年以降は CSV）から、
-  罪種・手口の37区分の件数を収録します。
+## 出典と利用条件
 
-## スキーマ: main
+- [警察庁 交通事故統計情報のオープンデータ](https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html)
+- 都道府県警察の犯罪発生情報（[警察庁 犯罪オープンデータ リンク集](https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html)から各府県警の公開ページへ）
+- [警察庁 犯罪統計](https://www.npa.go.jp/publications/statistics/sousa/statistics.html)（政府統計の総合窓口 e-Stat 掲載の CSV）
+- [警察庁 特殊詐欺の認知・検挙状況等について](https://www.npa.go.jp/publications/statistics/sousa/sagi.html)
+- [警視庁 区市町村の町丁別、罪種別及び手口別認知件数](https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html)
 
-### テーブル: traffic_accident
+
+交通事故統計情報と特殊詐欺の統計は、警察庁ウェブサイトのコンテンツに準拠する
+[公共データ利用規約（第1.0版）（PDL1.0）](https://www.npa.go.jp/rules/index.html)に従います。
+
+犯罪統計資料は、[政府統計の総合窓口（e-Stat）利用規約（政府標準利用規約（第2.0版）準拠）](https://www.e-stat.go.jp/terms-of-use)に従います。
+
+警視庁の町丁別認知件数は、[東京都オープンデータカタログサイト](https://catalog.data.metro.tokyo.lg.jp/dataset/t000022d0000100001)に
+掲載された [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja) に従います。
+
+犯罪発生情報は、公表元の各都道府県警察の利用規約に従います。いずれも商用利用・再配布可
+（出典記載が条件）を確認しています。
+
+- 青森県警察: [公共データ利用規約（第1.0版）（PDL1.0）](https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/hanyoku_opendate.html)
+- 福島県警察: [福島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.fukushima.jp/16.kiyaku/16.kiyaku.html)
+- 栃木県警察: [CC BY 2.1 JP](https://data.bodik.jp/organization/090000)
+- 埼玉県警察: [埼玉県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.saitama.lg.jp/riyokiyaku.html)
+- 千葉県警察: [千葉県警察ウェブサイト利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.chiba.jp/kohoka/help_point01.html)
+- 神奈川県警察: [神奈川県警察利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.kanagawa.jp/tokei/hanzai_tokei/mesd0146.html)
+- 京都府警察: [CC BY 4.0](https://data.bodik.jp/organization/260002)
+- 大阪府警察: [大阪府警察公表データの利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.osaka.lg.jp/seikatsu/9260.html)
+- 徳島県警察: [徳島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.tokushima.jp/28opendata/index.html)
+- 佐賀県警察: [CC BY 4.0](https://data.bodik.jp/dataset/410004_hanzaijyouhou)
+- 宮崎県警察: [CC BY 4.0](https://data.bodik.jp/dataset/450006_1069)
+- 鹿児島県警察: [CC BY 4.0（オープンデータ利用規約併記）](https://data.bodik.jp/dataset/460001_hanzaihassei_2024)
+
+## テーブル
+
+| テーブル | 内容 | 行数 |
+| --- | --- | ---: |
+| `main.traffic_accident` | 人身事故の発生地点（1 件 1 行、緯度経度つき、2024 年） | 282,376 |
+| `crime.theft` | 街頭犯罪 7 手口の発生情報（1 認知件 1 行、町丁目単位、12 府県の 2024 年） | 98,794 |
+| `crime.prefecture_crime` | 都道府県別・罪種別の認知件数・検挙件数・検挙人員（2020〜2025 年） | 5,640 |
+| `crime.special_fraud` | 特殊詐欺の全国の手口別・月別の認知件数・被害額（2020 年 1 月から） | 1,072 |
+| `crime.tokyo_town_crime` | 東京都の町丁字別・罪種別・手口別の認知件数（2009 年から） | 87,273 |
+
+## 使い方
+
+全国の刑法犯の認知件数と検挙率の推移を出す:
+
+```sql
+SELECT year,
+       sum(recognized_cases) AS cases,
+       round(100.0 * sum(cleared_cases) / sum(recognized_cases), 1) AS clearance_rate
+FROM npa.crime.prefecture_crime
+WHERE crime_type = '刑法犯総数'
+GROUP BY ALL
+ORDER BY year;
+```
+
+## 注意
+
+- `crime.theft` は 12 府県（青森・福島・栃木・埼玉・千葉・神奈川・京都・大阪・徳島・佐賀・宮崎・鹿児島）だけで、全国の件数には使えません。府県間で件数を比べることもできません。全国を同じ定義で比べるときは `crime.prefecture_crime` を使ってください。東京都の町丁目単位の犯罪は `crime.tokyo_town_crime` にあります
+- 交通事故の `prefecture_code`（北海道は方面別に 5 分割）と `city_code`（3 桁）は警察独自のコードで、JIS のコードとは結合できません。犯罪のテーブルの `city_code` は 6 桁の全国地方公共団体コードです
+- 罪種・手口には包含関係や合計の行があります（侵入盗は窃盗犯の内数、`modus` が「特殊詐欺」の行は全手口の合計、`total` は罪種の計の合計）。罪種や手口をまたいで合計しないでください
+- 交通事故は死傷者を伴う人身事故だけで、物損事故は含みません。死者は発生から 24 時間以内の死者です
+
+## main.traffic_accident
 
 交通事故の発生地点（ポイント）です。警察庁が公開する年別の本票（honhyo）を取り込み、2024年（令和6年）
 発生分を収録します。各種コードは警察庁「各種コード表」に基づき名称を付与します。
@@ -53,21 +100,17 @@
 緯度経度は原典では度分秒を桁で連結した固定長文字列（緯度9桁 DDMMSSsss、経度10桁 DDDMMSSsss、
 秒は小数3桁）で提供されるため、十進度へ変換したうえで geometry（ポイント）を生成しています。
 
-年別ファイルには発生年の異なるレコード（前年12月分等）が少数混在するため、跨ぎの重複を避けるべく
-各ファイルは当該発生年のレコードのみを採用します。過去年・補充票（当事者別）・高速票（高速道路）の
-取り込みは将来の拡張余地です。
+年別ファイルには発生年の異なるレコード（前年12月分等）が少数混在するため、年をまたぐ重複を避けるため、
+各ファイルからは当該発生年のレコードだけを採っています。補充票（当事者別）・高速票（高速道路）は収録しません。
 
-## スキーマ: crime
-
-### テーブル: theft
+## crime.theft
 
 都道府県警察が公開する犯罪発生情報です。窃盗のうち街頭犯罪7手口（ひったくり・車上ねらい・
 部品ねらい・自動販売機ねらい・自動車盗・オートバイ盗・自転車盗）を1認知件1レコード・
 町丁目単位で収録します。
 
 現在は令和6年（2024年）分・12府県（青森・福島・栃木・埼玉・千葉・神奈川・京都・大阪・徳島・
-佐賀・宮崎・鹿児島）を収録します。対象は利用規約で商用利用・再配布可を確認できた府県のみで、
-他の都道府県・過去年の取り込みは将来の拡張余地です。
+佐賀・宮崎・鹿児島）を収録します。対象は利用規約で商用利用・再配布可を確認できた府県だけです。
 
 - crime_name: 罪名（VARCHAR、窃盗。一部に常習累犯窃盗）
 - modus: 手口（VARCHAR、ひったくり／車上ねらい／部品ねらい／自動販売機ねらい／自動車盗／オートバイ盗／自転車盗）
@@ -96,9 +139,9 @@
 （UTF-8 BOM / Shift-JIS）と区切り文字（カンマ／タブ）の混在はファイル単位で自動判定して
 統合しています。発生地が不明のレコード（都道府県・市区町村コードが空）も原典どおり保持します。
 発生地不明を空欄ではなく「日本国内のいずれかの場所」等の文言で表す県があるため、都道府県名でない
-値は空欄と同じく NULL に寄せています。
+値は空欄と同じく NULL に置き換えています。
 
-### テーブル: prefecture_crime
+## crime.prefecture_crime
 
 警察庁の犯罪統計資料（1～12月分の確定値）の都道府県別表です。1年×1罪種×1都道府県で1行、
 2020年から2025年までを収録します。全都道府県を警察庁の同じ定義で集計した値なので、
@@ -123,7 +166,7 @@ theft（12府県・町丁目単位）の件数を全国の中で位置づける�
 主な街頭犯罪総数は路上強盗・部品ねらい・車上ねらい・自動販売機ねらい・オートバイ盗・自転車盗の合計です。
 検挙率は cleared_cases ÷ recognized_cases で求められ、100%を超えることがあります。
 
-### テーブル: special_fraud
+## crime.special_fraud
 
 警察庁の特殊詐欺の認知・検挙状況の手口別・月別表です。1区分×1か月×1手口で1行、2020年1月から
 最新の公表月までを収録します。全国の値だけで、都道府県別の値はありません。
@@ -150,7 +193,7 @@ theft（12府県・町丁目単位）の件数を全国の中で位置づける�
 modus が「特殊詐欺」の行は全手口の合計なので、手口の行と足し合わせないでください。
 形態（文言）別の内訳表と、組織的犯罪処罰法違反などの関連法令の表は収録しません。
 
-### テーブル: tokyo_town_crime
+## crime.tokyo_town_crime
 
 警視庁の町丁字別・罪種別・手口別の認知件数（年累計）です。1年×1町丁字で1行、2009年から2025年まで、
 1年あたり約5,000〜5,200町丁字を収録します。認知が0件の町丁字は行がありません。
@@ -203,46 +246,9 @@ modus が「特殊詐欺」の行は全手口の合計なので、手口の行�
 収録から外しています。発生地が都外（他県）・海外・不明の認知は町丁字に属さないので収録しません。
 そのため町丁字を合計しても都全体の認知件数とは一致しません。当年の月累計（年途中の値）は収録しません。
 
-## データ更新手順
+## 更新
 
-main.py が警察庁の公開 CSV（本票、Shift-JIS）と各府県警の犯罪発生情報 CSV、犯罪統計資料の CSV と特殊詐欺の統計の Excel、
-警視庁の町丁別認知件数の Excel / CSV を取得して UTF-8 へ正規化し、dbt build で各テーブルを再生成する。ビルドは `bash scripts/build.sh` で実行する（Queria に公開する）。
-
-## ライセンス
-
-交通事故統計情報と特殊詐欺の統計は、警察庁ウェブサイトのコンテンツに準拠する
-[公共データ利用規約（第1.0版）（PDL1.0）](https://www.npa.go.jp/rules/index.html)に従う。
-
-犯罪統計資料は、[政府統計の総合窓口（e-Stat）利用規約（政府標準利用規約（第2.0版）準拠）](https://www.e-stat.go.jp/terms-of-use)に従う。
-
-警視庁の町丁別認知件数は、[東京都オープンデータカタログサイト](https://catalog.data.metro.tokyo.lg.jp/dataset/t000022d0000100001)に
-掲載された [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja) に従う。
-
-犯罪発生情報は、公表元の各都道府県警察の利用規約に従う。いずれも商用利用・再配布可
-（出典記載が条件）を確認済み。
-
-- 青森県警察: [公共データ利用規約（第1.0版）（PDL1.0）](https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/hanyoku_opendate.html)
-- 福島県警察: [福島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.fukushima.jp/16.kiyaku/16.kiyaku.html)
-- 栃木県警察: [CC BY 2.1 JP](https://data.bodik.jp/organization/090000)
-- 埼玉県警察: [埼玉県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.saitama.lg.jp/riyokiyaku.html)
-- 千葉県警察: [千葉県警察ウェブサイト利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.chiba.jp/kohoka/help_point01.html)
-- 神奈川県警察: [神奈川県警察利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.kanagawa.jp/tokei/hanzai_tokei/mesd0146.html)
-- 京都府警察: [CC BY 4.0](https://data.bodik.jp/organization/260002)
-- 大阪府警察: [大阪府警察公表データの利用ルール（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.osaka.lg.jp/seikatsu/9260.html)
-- 徳島県警察: [徳島県警察ホームページ利用規約（政府標準利用規約（第2.0版）準拠）](https://www.police.pref.tokushima.jp/28opendata/index.html)
-- 佐賀県警察: [CC BY 4.0](https://data.bodik.jp/dataset/410004_hanzaijyouhou)
-- 宮崎県警察: [CC BY 4.0](https://data.bodik.jp/dataset/450006_1069)
-- 鹿児島県警察: [CC BY 4.0（オープンデータ利用規約併記）](https://data.bodik.jp/dataset/460001_hanzaihassei_2024)
-
-出典:
-「交通事故統計情報のオープンデータ」（警察庁）（https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html）、
-および青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・京都府警察・
-大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察の犯罪発生情報
-（犯罪オープンデータ）、「犯罪統計」（警察庁）（https://www.npa.go.jp/publications/statistics/sousa/statistics.html）、
-「特殊詐欺の認知・検挙状況等について」（警察庁）（https://www.npa.go.jp/publications/statistics/sousa/sagi.html）を加工して作成。
-
-Shift-JIS の CSV を UTF-8 へ変換し、交通事故は緯度経度の度分秒を十進度へ変換のうえ地点ポイントを
-生成する加工と各種コードへの名称付与、犯罪発生情報は手口別の可変列を和集合スキーマへ統合する
-加工、犯罪統計資料は都道府県別表の当年の列を縦持ちへ組み替え、都道府県の行だけを取り出す加工、
-特殊詐欺の統計は手口別の月別表を手口×年月の縦持ちへ組み替える加工を行っている。
-統計値そのものは改変していない。
+```bash
+uv sync
+bash scripts/build.sh
+```
