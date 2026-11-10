@@ -1,0 +1,27 @@
+schema: code
+name: prefecture
+title: 交通事故統計の都道府県コード
+description: |-
+  交通事故統計の都道府県コード（警察の管轄区分）と、JIS X 0401 の都道府県コードの対応表です。main.traffic_accident の lg_code はこの対応で作っています。
+
+  - 北海道は方面別に 5 つのコード（10〜14）があり、JIS コードはどれも 01 です
+  - 交通事故統計の市区町村コード（3 桁）は標準地域コードの市区町村の部分なので、JIS の都道府県コードと連結すると 5 桁の市区町村コードになります
+keywords:
+  - 警察庁
+  - 交通事故
+  - 都道府県コード
+  - コード表
+published: true
+sources:
+  - path: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
+fields:
+  - name: prefecture_code
+    title: 都道府県コード（警察）
+    description: 交通事故統計の都道府県コード（2 桁）。main.traffic_accident の prefecture_code
+  - name: prefecture
+    title: 都道府県
+    description: 「各種コード表」の名称。北海道は方面名つき
+  - name: jis_prefecture_code
+    title: 都道府県コード（JIS）
+    description: JIS X 0401 の 2 桁
+    annotations: { queria: { semantic: { role: entity, name: prefecture } } }
