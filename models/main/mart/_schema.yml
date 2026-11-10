@@ -7,6 +7,7 @@ models:
       発生日時・地点（緯度経度・geometry）・事故内容・天候・路面状態・道路形状・
       事故類型などを持つ。警察庁 交通事故統計情報オープンデータ（本票）。
       都道府県コードは警察の管轄区分（北海道は方面別に5分割）で、JIS コードとは異なる。
+      lg_code は都道府県コードを JIS に変換し、市区町村コードと合わせた全国地方公共団体コード。
       出典: 警察庁 交通事故統計情報のオープンデータ。
       https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
       各種コードは警察庁「各種コード表」に準拠する。
@@ -22,6 +23,9 @@ models:
       - name: fatalities
       - name: injuries
       - name: city_code
+      - name: lg_code
+        data_tests:
+          - not_null
       - name: occurred_date
       - name: occurred_at
       - name: occurred_year

@@ -1,4 +1,6 @@
-{# 交通事故の発生地点（ポイント）。コード列に名称を付与し、緯度経度から geometry を生成する。 #}
+{# 交通事故の発生地点（ポイント）。コード列に名称を付与し、緯度経度から geometry を生成する。
+   警察の都道府県コードを JIS に変換し、市区町村コード（標準地域コードの下 3 桁）と合わせて
+   全国地方公共団体コード（6 桁）を作る。 #}
 
 {{ config(materialized='table') }}
 
@@ -13,6 +15,7 @@ select
     fatalities,
     injuries,
     city_code,
+    {{ local_government_code(jis_prefecture_code('prefecture_code') ~ ' || city_code') }} as lg_code,
     occurred_date,
     occurred_at,
     occurred_year,

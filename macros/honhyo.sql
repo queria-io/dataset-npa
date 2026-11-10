@@ -59,6 +59,67 @@
   END
 {% endmacro %}
 
+{# 警察の都道府県コードを JIS X 0401 の都道府県コード（2 桁）に変換する。
+   対応は「各種コード表」の都道府県名と JIS X 0401 の名前で決めている。
+   北海道の 5 方面（10〜14）はどれも 01。 #}
+
+{% macro jis_prefecture_code(col) %}
+  CASE {{ col }}
+    WHEN '10' THEN '01'
+    WHEN '11' THEN '01'
+    WHEN '12' THEN '01'
+    WHEN '13' THEN '01'
+    WHEN '14' THEN '01'
+    WHEN '20' THEN '02'
+    WHEN '21' THEN '03'
+    WHEN '22' THEN '04'
+    WHEN '23' THEN '05'
+    WHEN '24' THEN '06'
+    WHEN '25' THEN '07'
+    WHEN '30' THEN '13'
+    WHEN '40' THEN '08'
+    WHEN '41' THEN '09'
+    WHEN '42' THEN '10'
+    WHEN '43' THEN '11'
+    WHEN '44' THEN '12'
+    WHEN '45' THEN '14'
+    WHEN '46' THEN '15'
+    WHEN '47' THEN '19'
+    WHEN '48' THEN '20'
+    WHEN '49' THEN '22'
+    WHEN '50' THEN '16'
+    WHEN '51' THEN '17'
+    WHEN '52' THEN '18'
+    WHEN '53' THEN '21'
+    WHEN '54' THEN '23'
+    WHEN '55' THEN '24'
+    WHEN '60' THEN '25'
+    WHEN '61' THEN '26'
+    WHEN '62' THEN '27'
+    WHEN '63' THEN '28'
+    WHEN '64' THEN '29'
+    WHEN '65' THEN '30'
+    WHEN '70' THEN '31'
+    WHEN '71' THEN '32'
+    WHEN '72' THEN '33'
+    WHEN '73' THEN '34'
+    WHEN '74' THEN '35'
+    WHEN '80' THEN '36'
+    WHEN '81' THEN '37'
+    WHEN '82' THEN '38'
+    WHEN '83' THEN '39'
+    WHEN '90' THEN '40'
+    WHEN '91' THEN '41'
+    WHEN '92' THEN '42'
+    WHEN '93' THEN '43'
+    WHEN '94' THEN '44'
+    WHEN '95' THEN '45'
+    WHEN '96' THEN '46'
+    WHEN '97' THEN '47'
+  END
+{% endmacro %}
+
+
 {% macro accident_type_name(col) %}
   CASE {{ col }}
     WHEN '1' THEN '死亡'
