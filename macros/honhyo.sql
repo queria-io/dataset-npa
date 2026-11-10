@@ -3,122 +3,83 @@
   コード定義は警察庁「各種コード表」（codebook）に準拠する。
 #}
 
+{# 警察の都道府県コードごとの名称と JIS X 0401 の都道府県コード（2 桁）。
+   JIS コードは「各種コード表」の都道府県名と JIS X 0401 の名前で決めている。
+   北海道の 5 方面（10〜14）はどれも 01。 #}
+
+{% macro police_prefectures() %}
+  {% do return({
+    '10': {'name': '北海道（札幌方面）', 'jis': '01'},
+    '11': {'name': '北海道（函館方面）', 'jis': '01'},
+    '12': {'name': '北海道（旭川方面）', 'jis': '01'},
+    '13': {'name': '北海道（釧路方面）', 'jis': '01'},
+    '14': {'name': '北海道（北見方面）', 'jis': '01'},
+    '20': {'name': '青森', 'jis': '02'},
+    '21': {'name': '岩手', 'jis': '03'},
+    '22': {'name': '宮城', 'jis': '04'},
+    '23': {'name': '秋田', 'jis': '05'},
+    '24': {'name': '山形', 'jis': '06'},
+    '25': {'name': '福島', 'jis': '07'},
+    '30': {'name': '東京', 'jis': '13'},
+    '40': {'name': '茨城', 'jis': '08'},
+    '41': {'name': '栃木', 'jis': '09'},
+    '42': {'name': '群馬', 'jis': '10'},
+    '43': {'name': '埼玉', 'jis': '11'},
+    '44': {'name': '千葉', 'jis': '12'},
+    '45': {'name': '神奈川', 'jis': '14'},
+    '46': {'name': '新潟', 'jis': '15'},
+    '47': {'name': '山梨', 'jis': '19'},
+    '48': {'name': '長野', 'jis': '20'},
+    '49': {'name': '静岡', 'jis': '22'},
+    '50': {'name': '富山', 'jis': '16'},
+    '51': {'name': '石川', 'jis': '17'},
+    '52': {'name': '福井', 'jis': '18'},
+    '53': {'name': '岐阜', 'jis': '21'},
+    '54': {'name': '愛知', 'jis': '23'},
+    '55': {'name': '三重', 'jis': '24'},
+    '60': {'name': '滋賀', 'jis': '25'},
+    '61': {'name': '京都', 'jis': '26'},
+    '62': {'name': '大阪', 'jis': '27'},
+    '63': {'name': '兵庫', 'jis': '28'},
+    '64': {'name': '奈良', 'jis': '29'},
+    '65': {'name': '和歌山', 'jis': '30'},
+    '70': {'name': '鳥取', 'jis': '31'},
+    '71': {'name': '島根', 'jis': '32'},
+    '72': {'name': '岡山', 'jis': '33'},
+    '73': {'name': '広島', 'jis': '34'},
+    '74': {'name': '山口', 'jis': '35'},
+    '80': {'name': '徳島', 'jis': '36'},
+    '81': {'name': '香川', 'jis': '37'},
+    '82': {'name': '愛媛', 'jis': '38'},
+    '83': {'name': '高知', 'jis': '39'},
+    '90': {'name': '福岡', 'jis': '40'},
+    '91': {'name': '佐賀', 'jis': '41'},
+    '92': {'name': '長崎', 'jis': '42'},
+    '93': {'name': '熊本', 'jis': '43'},
+    '94': {'name': '大分', 'jis': '44'},
+    '95': {'name': '宮崎', 'jis': '45'},
+    '96': {'name': '鹿児島', 'jis': '46'},
+    '97': {'name': '沖縄', 'jis': '47'},
+  }) %}
+{% endmacro %}
+
 {% macro prefecture_name(col) %}
   CASE {{ col }}
-    WHEN '10' THEN '北海道（札幌方面）'
-    WHEN '11' THEN '北海道（函館方面）'
-    WHEN '12' THEN '北海道（旭川方面）'
-    WHEN '13' THEN '北海道（釧路方面）'
-    WHEN '14' THEN '北海道（北見方面）'
-    WHEN '20' THEN '青森'
-    WHEN '21' THEN '岩手'
-    WHEN '22' THEN '宮城'
-    WHEN '23' THEN '秋田'
-    WHEN '24' THEN '山形'
-    WHEN '25' THEN '福島'
-    WHEN '30' THEN '東京'
-    WHEN '40' THEN '茨城'
-    WHEN '41' THEN '栃木'
-    WHEN '42' THEN '群馬'
-    WHEN '43' THEN '埼玉'
-    WHEN '44' THEN '千葉'
-    WHEN '45' THEN '神奈川'
-    WHEN '46' THEN '新潟'
-    WHEN '47' THEN '山梨'
-    WHEN '48' THEN '長野'
-    WHEN '49' THEN '静岡'
-    WHEN '50' THEN '富山'
-    WHEN '51' THEN '石川'
-    WHEN '52' THEN '福井'
-    WHEN '53' THEN '岐阜'
-    WHEN '54' THEN '愛知'
-    WHEN '55' THEN '三重'
-    WHEN '60' THEN '滋賀'
-    WHEN '61' THEN '京都'
-    WHEN '62' THEN '大阪'
-    WHEN '63' THEN '兵庫'
-    WHEN '64' THEN '奈良'
-    WHEN '65' THEN '和歌山'
-    WHEN '70' THEN '鳥取'
-    WHEN '71' THEN '島根'
-    WHEN '72' THEN '岡山'
-    WHEN '73' THEN '広島'
-    WHEN '74' THEN '山口'
-    WHEN '80' THEN '徳島'
-    WHEN '81' THEN '香川'
-    WHEN '82' THEN '愛媛'
-    WHEN '83' THEN '高知'
-    WHEN '90' THEN '福岡'
-    WHEN '91' THEN '佐賀'
-    WHEN '92' THEN '長崎'
-    WHEN '93' THEN '熊本'
-    WHEN '94' THEN '大分'
-    WHEN '95' THEN '宮崎'
-    WHEN '96' THEN '鹿児島'
-    WHEN '97' THEN '沖縄'
+  {%- for code, p in police_prefectures().items() %}
+    WHEN '{{ code }}' THEN '{{ p.name }}'
+  {%- endfor %}
   END
 {% endmacro %}
 
-{# 警察の都道府県コードを JIS X 0401 の都道府県コード（2 桁）に変換する。
-   対応は「各種コード表」の都道府県名と JIS X 0401 の名前で決めている。
-   北海道の 5 方面（10〜14）はどれも 01。 #}
+{# 警察の都道府県コードを JIS X 0401 の都道府県コード（2 桁）に変換する。 #}
 
 {% macro jis_prefecture_code(col) %}
   CASE {{ col }}
-    WHEN '10' THEN '01'
-    WHEN '11' THEN '01'
-    WHEN '12' THEN '01'
-    WHEN '13' THEN '01'
-    WHEN '14' THEN '01'
-    WHEN '20' THEN '02'
-    WHEN '21' THEN '03'
-    WHEN '22' THEN '04'
-    WHEN '23' THEN '05'
-    WHEN '24' THEN '06'
-    WHEN '25' THEN '07'
-    WHEN '30' THEN '13'
-    WHEN '40' THEN '08'
-    WHEN '41' THEN '09'
-    WHEN '42' THEN '10'
-    WHEN '43' THEN '11'
-    WHEN '44' THEN '12'
-    WHEN '45' THEN '14'
-    WHEN '46' THEN '15'
-    WHEN '47' THEN '19'
-    WHEN '48' THEN '20'
-    WHEN '49' THEN '22'
-    WHEN '50' THEN '16'
-    WHEN '51' THEN '17'
-    WHEN '52' THEN '18'
-    WHEN '53' THEN '21'
-    WHEN '54' THEN '23'
-    WHEN '55' THEN '24'
-    WHEN '60' THEN '25'
-    WHEN '61' THEN '26'
-    WHEN '62' THEN '27'
-    WHEN '63' THEN '28'
-    WHEN '64' THEN '29'
-    WHEN '65' THEN '30'
-    WHEN '70' THEN '31'
-    WHEN '71' THEN '32'
-    WHEN '72' THEN '33'
-    WHEN '73' THEN '34'
-    WHEN '74' THEN '35'
-    WHEN '80' THEN '36'
-    WHEN '81' THEN '37'
-    WHEN '82' THEN '38'
-    WHEN '83' THEN '39'
-    WHEN '90' THEN '40'
-    WHEN '91' THEN '41'
-    WHEN '92' THEN '42'
-    WHEN '93' THEN '43'
-    WHEN '94' THEN '44'
-    WHEN '95' THEN '45'
-    WHEN '96' THEN '46'
-    WHEN '97' THEN '47'
+  {%- for code, p in police_prefectures().items() %}
+    WHEN '{{ code }}' THEN '{{ p.jis }}'
+  {%- endfor %}
   END
 {% endmacro %}
-
 
 {% macro accident_type_name(col) %}
   CASE {{ col }}

@@ -4,6 +4,13 @@
 
 {{ config(materialized='table') }}
 
+with accidents as (
+    select
+        *,
+        {{ jis_prefecture_code('prefecture_code') }} || city_code as jis_city_code
+    from {{ ref('stg_traffic_accident') }}
+)
+
 select
     accident_id,
     prefecture_code,
@@ -15,7 +22,7 @@ select
     fatalities,
     injuries,
     city_code,
-    {{ local_government_code(jis_prefecture_code('prefecture_code') ~ ' || city_code') }} as lg_code,
+    {{ local_government_code('jis_city_code') }} as lg_code,
     occurred_date,
     occurred_at,
     occurred_year,
@@ -44,4 +51,4 @@ select
     latitude,
     longitude,
     ST_Point(longitude, latitude) as geometry
-from {{ ref('stg_traffic_accident') }}
+from accidents
