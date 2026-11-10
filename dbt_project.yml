@@ -4,19 +4,8 @@ version: "1.0.0"
 profile: "npa"
 
 model-paths: ["models"]
-seed-paths: ["seeds"]
 macro-paths: ["macros", "shared/macros"]
 clean-targets: ["target", "dbt_packages"]
-
-seeds:
-  npa:
-    +database: npa
-    +schema: main
-    police_prefecture:
-      +column_types:
-        prefecture_code: varchar
-        prefecture: varchar
-        jis_prefecture_code: varchar
 
 models:
   npa:
