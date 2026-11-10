@@ -1,20 +1,22 @@
 {# 交通事故の発生地点（ポイント）。コード列に名称を付与し、緯度経度から geometry を生成する。
-   警察の都道府県コードを JIS に変換し、市区町村コード（標準地域コードの下 3 桁）と合わせて
+   警察の都道府県コードを code.prefecture と結合して JIS に変換し、市区町村コード（標準地域コードの下 3 桁）と合わせて
    全国地方公共団体コード（6 桁）を作る。 #}
 
 {{ config(materialized='table') }}
 
 with accidents as (
     select
-        *,
-        {{ jis_prefecture_code('prefecture_code') }} || city_code as jis_city_code
-    from {{ ref('stg_traffic_accident') }}
+        a.*,
+        p.prefecture,
+        p.jis_prefecture_code || a.city_code as jis_city_code
+    from {{ ref('stg_traffic_accident') }} as a
+    left join {{ ref('prefecture') }} as p using (prefecture_code)
 )
 
 select
     accident_id,
     prefecture_code,
-    {{ prefecture_name('prefecture_code') }} as prefecture,
+    prefecture,
     police_station_code,
     accident_number,
     accident_type_code,

@@ -1,0 +1,15 @@
+version: 2
+
+seeds:
+  - name: police_prefecture
+    description: |
+      交通事故統計の都道府県コード（警察の管轄区分）ごとの名称と、JIS X 0401 の都道府県コード（2 桁）。
+      名称は警察庁「各種コード表」の「都道府県」シートの値。JIS コードはその都道府県名と JIS X 0401 の名前で決めている。
+      北海道の 5 方面（10〜14）はどれも 01。公開するのは code.prefecture。
+    columns:
+      - name: prefecture_code
+        description: 交通事故統計の都道府県コード（2 桁）
+      - name: prefecture
+        description: 「各種コード表」の名称
+      - name: jis_prefecture_code
+        description: JIS X 0401 の 2 桁
