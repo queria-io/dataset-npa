@@ -8,9 +8,10 @@ with accidents as (
     select
         a.*,
         p.prefecture,
-        p.jis_prefecture_code || a.city_code as jis_city_code
+        p.prefecture_code || a.city_code as jis_city_code
     from {{ ref('stg_traffic_accident') }} as a
-    left join {{ ref('prefecture') }} as p using (prefecture_code)
+    left join {{ ref('prefecture') }} as p
+        on a.prefecture_code = p.police_prefecture_code
 )
 
 select

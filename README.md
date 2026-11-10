@@ -114,9 +114,9 @@ ORDER BY year;
 交通事故統計の都道府県コード（警察の管轄区分）と、JIS X 0401 の都道府県コードの対応表です。
 `main.traffic_accident` の `lg_code` はこの対応で作っています。
 
-- prefecture_code: 都道府県コード（VARCHAR、交通事故統計の 2 桁。北海道は方面別に 10〜14）
+- police_prefecture_code: 都道府県コード（VARCHAR、交通事故統計の 2 桁。北海道は方面別に 10〜14。`main.traffic_accident` の `prefecture_code` と結合する）
 - prefecture: 都道府県（VARCHAR、「各種コード表」の名称）
-- jis_prefecture_code: 都道府県コード（VARCHAR、JIS X 0401 の 2 桁）
+- prefecture_code: 都道府県コード（VARCHAR、JIS X 0401 の 2 桁）
 
 ## crime.theft
 

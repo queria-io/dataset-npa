@@ -19,7 +19,7 @@ models:
           - relationships:
               arguments:
                 to: ref('prefecture')
-                field: prefecture_code
+                field: police_prefecture_code
       - name: prefecture
       - name: police_station_code
       - name: accident_number

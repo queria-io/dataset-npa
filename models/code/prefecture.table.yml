@@ -15,13 +15,13 @@ published: true
 sources:
   - path: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
 fields:
-  - name: prefecture_code
+  - name: police_prefecture_code
     title: 都道府県コード（警察）
-    description: 交通事故統計の都道府県コード（2 桁）。main.traffic_accident の prefecture_code
+    description: 交通事故統計の都道府県コード（2 桁）。main.traffic_accident の prefecture_code と結合する
   - name: prefecture
     title: 都道府県
     description: 「各種コード表」の名称。北海道は方面名つき
-  - name: jis_prefecture_code
+  - name: prefecture_code
     title: 都道府県コード（JIS）
     description: JIS X 0401 の 2 桁
-    annotations: { queria: { semantic: { role: entity, name: prefecture } } }
+    semantic: { role: entity, name: prefecture }

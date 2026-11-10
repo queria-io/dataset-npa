@@ -17,7 +17,7 @@ models:
       - name: injuries
         description: 負傷者数
       - name: city_code
-        description: 市区町村コード（警察独自の3桁コード）
+        description: 市区町村コード（標準地域コードの市区町村の部分の3桁。都道府県の部分を含まない）
       - name: occurred_year
         description: 発生年
       - name: occurred_month

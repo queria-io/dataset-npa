@@ -56,4 +56,4 @@ select * from (values
     ('95', '宮崎', '45'),
     ('96', '鹿児島', '46'),
     ('97', '沖縄', '47')
-) as t(prefecture_code, prefecture, jis_prefecture_code)
+) as t(police_prefecture_code, prefecture, prefecture_code)

@@ -67,7 +67,7 @@ ai_context:
     交通事故を市区町村で結合するときは lg_code（6桁）を使う。prefecture_code は警察独自で
     北海道を方面別に5分割しており、city_code は標準地域コードの市区町村の部分の3桁。
     警察の都道府県コードと JIS の対応は code.prefecture にある。
-    一方 crime.theft の city_code は JIS の6桁（政令市は区コード）なので結合できる。
+    crime.theft の city_code も JIS の6桁（政令市は区コード）なので結合できる。
     交通事故は「死者数＝発生から24時間以内」の定義。人身事故のみで物損事故は含まない。
     犯罪発生情報の列は手口別様式の和集合なので、手口に存在しない列は NULL になる。
     crime.prefecture_crime は警察庁の犯罪統計資料（確定値）で、全47都道府県の罪種別の
