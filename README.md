@@ -44,6 +44,7 @@
 | `crime.prefecture_crime` | 都道府県別・罪種別の認知件数・検挙件数・検挙人員（2020〜2025 年） | 5,640 |
 | `crime.special_fraud` | 特殊詐欺の全国の手口別・月別の認知件数・被害額（2020 年 1 月から） | 1,072 |
 | `crime.tokyo_town_crime` | 東京都の町丁字別・罪種別・手口別の認知件数（2009 年から） | 87,273 |
+| `code.prefecture` | 交通事故統計の都道府県コード（警察）と JIS の都道府県コードの対応 | 51 |
 
 ## 使い方
 
@@ -62,7 +63,7 @@ ORDER BY year;
 ## 注意
 
 - `crime.theft` は 12 府県（青森・福島・栃木・埼玉・千葉・神奈川・京都・大阪・徳島・佐賀・宮崎・鹿児島）だけで、全国の件数には使えません。府県間で件数を比べることもできません。全国を同じ定義で比べるときは `crime.prefecture_crime` を使ってください。東京都の町丁目単位の犯罪は `crime.tokyo_town_crime` にあります
-- 交通事故の `prefecture_code`（北海道は方面別に 5 分割）と `city_code`（3 桁）は警察独自のコードで、JIS のコードとは結合できません。犯罪のテーブルの `city_code` は 6 桁の全国地方公共団体コードです
+- 交通事故を市区町村で他のテーブルと結合するときは `lg_code`（6 桁）を使います。`prefecture_code` は警察独自のコード（北海道は方面別に 5 分割）で、`city_code` は市区町村の部分の 3 桁だけなので、2 つを連結しても JIS のコードになりません。犯罪のテーブルの `city_code` は 6 桁の全国地方公共団体コードです
 - 罪種・手口には包含関係や合計の行があります（侵入盗は窃盗犯の内数、`modus` が「特殊詐欺」の行は全手口の合計、`total` は罪種の計の合計）。罪種や手口をまたいで合計しないでください
 - 交通事故は死傷者を伴う人身事故だけで、物損事故は含みません。死者は発生から 24 時間以内の死者です
 
@@ -80,7 +81,8 @@ ORDER BY year;
 - accident_type: 事故内容（VARCHAR、死亡／負傷）
 - fatalities: 死者数（INTEGER、発生から24時間以内）
 - injuries: 負傷者数（INTEGER）
-- city_code: 市区町村コード（VARCHAR、警察独自の3桁コード。JIS 市区町村コードとは異なる）
+- city_code: 市区町村コード（VARCHAR、標準地域コードの市区町村の部分の 3 桁。都道府県の部分を含まない）
+- lg_code: 全国地方公共団体コード（VARCHAR、6 桁・検査数字付き。発生地の市区町村で、政令指定都市は区）
 - occurred_date: 発生日（DATE）
 - occurred_at: 発生日時（TIMESTAMP、時分が不明の場合は NULL）
 - occurred_year / occurred_month / occurred_day / occurred_hour / occurred_minute: 発生年月日時分（INTEGER）
@@ -97,11 +99,24 @@ ORDER BY year;
 - longitude: 経度（DOUBLE、東経・十進度）
 - geometry: 位置（GEOMETRY、緯度経度から生成した地点ポイント）
 
+`lg_code` は、警察の都道府県コードを「各種コード表」の都道府県名から JIS X 0401 の 2 桁に変換し（北海道の 5 方面はどれも `01`）、
+`city_code` の 3 桁と連結して検査数字を付けたものです。都道府県コードの対応は `code.prefecture` で引けます。「各種コード表」によると `city_code` は総務省の標準地域コードで、
+年の途中で市町村の合併などがあった場合はその年の間は従前のコードを使います。そのため `lg_code` は発生年の時点のコードです。
+
 緯度経度は原典では度分秒を桁で連結した固定長文字列（緯度9桁 DDMMSSsss、経度10桁 DDDMMSSsss、
 秒は小数3桁）で提供されるため、十進度へ変換したうえで geometry（ポイント）を生成しています。
 
 年別ファイルには発生年の異なるレコード（前年12月分等）が少数混在するため、年をまたぐ重複を避けるため、
 各ファイルからは当該発生年のレコードだけを採っています。補充票（当事者別）・高速票（高速道路）は収録しません。
+
+## code.prefecture
+
+交通事故統計の都道府県コード（警察の管轄区分）と、JIS X 0401 の都道府県コードの対応表です。
+`main.traffic_accident` の `lg_code` はこの対応で作っています。
+
+- police_prefecture_code: 都道府県コード（VARCHAR、交通事故統計の 2 桁。北海道は方面別に 10〜14。`main.traffic_accident` の `prefecture_code` と結合する）
+- prefecture: 都道府県（VARCHAR、「各種コード表」の名称）
+- prefecture_code: 都道府県コード（VARCHAR、JIS X 0401 の 2 桁）
 
 ## crime.theft
 

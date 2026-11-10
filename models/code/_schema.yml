@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: prefecture
+    description: |
+      交通事故統計の都道府県コード（警察の管轄区分）と JIS X 0401 の都道府県コードの対応表。
+      出典: 警察庁 交通事故統計情報のオープンデータ「各種コード表」。
+    access: public
+    columns:
+      - name: police_prefecture_code
+        data_tests:
+          - unique
+          - not_null
+      - name: prefecture
+      - name: prefecture_code
+        data_tests:
+          - not_null

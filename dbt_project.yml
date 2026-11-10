@@ -17,6 +17,8 @@ models:
         +materialized: view
       mart:
         +materialized: table
+    code:
+      +materialized: table
     crime:
       raw:
         +materialized: table

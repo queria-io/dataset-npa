@@ -5,7 +5,7 @@ description: |-
   死傷者を伴う交通事故の発生地点を 1 件 1 行で持つテーブルです。2024 年発生分で、発生日時・緯度経度・天候・道路形状・事故類型などを持ちます。
 
   - 物損事故は含みません。死者は発生から 24 時間以内の死者です
-  - prefecture_code（北海道は方面別に 5 分割）と city_code（3 桁）は警察独自のコードで、JIS のコードとは結合できません
+  - 市区町村で他のテーブルと結合するときは lg_code を使います。prefecture_code は警察独自のコード（北海道は方面別に 5 分割）です
 keywords:
   - 警察庁
   - 交通事故
@@ -21,7 +21,7 @@ fields:
     description: 発生年・都道府県・警察署等・本票番号を連結した一意キー
   - name: prefecture_code
     title: 都道府県コード
-    description: 警察の管轄区分（北海道は方面別に5分割）
+    description: 警察の管轄区分（北海道は方面別に5分割）。JIS の都道府県コードとは異なります
   - name: prefecture
     title: 都道府県
   - name: police_station_code
@@ -39,7 +39,11 @@ fields:
     title: 負傷者数
   - name: city_code
     title: 市区町村コード
-    description: 警察独自の3桁コード（JIS 市区町村コードとは異なる）
+    description: 標準地域コードの市区町村の部分（3 桁）。都道府県の部分を含みません
+  - name: lg_code
+    title: 全国地方公共団体コード
+    description: 6 桁（検査数字付き）。発生地の市区町村で、政令指定都市は区。発生年の時点のコード
+    semantic: { role: entity, name: city }
   - name: occurred_date
     title: 発生日
   - name: occurred_at
