@@ -4,7 +4,7 @@ description: |-
   警視庁 区市町村の町丁別、罪種別及び手口別認知件数（年累計）の生データ。
   2009〜2016年の Excel（区市町村ごとのシート）と2017年以降の CSV から町丁字の行を取り出したもの。
   区市町村計・地域計・合計と、他県・海外認知・不明の行は含まない。
-published: false
+annotations: { queria: { published: false } }
 fields:
   - name: year
     description: 対象年（西暦。1〜12月の年累計）
