@@ -11,7 +11,6 @@ keywords:
   - 交通事故
   - 都道府県コード
   - コード表
-published: true
 sources:
   - path: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
 fields:
@@ -24,4 +23,4 @@ fields:
   - name: prefecture_code
     title: 都道府県コード（JIS）
     description: JIS X 0401 の 2 桁
-    semantic: { role: entity, name: prefecture }
+    annotations: { queria: { semantic: { role: entity, name: prefecture } } }

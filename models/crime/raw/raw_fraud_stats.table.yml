@@ -4,7 +4,7 @@ description: |-
   警察庁「特殊詐欺の認知・検挙状況等について」の手口別・月別表の生データ。
   年別の確定値（2020〜2025年・令和2年の区分）と最新の暫定値（当年と前年・令和8年の区分）を
   区分×年×月×手口で1行にしたもの。形態（文言）別の内訳表と関連法令の表は含まない。
-published: false
+annotations: { queria: { published: false } }
 fields:
   - name: classification_year
     description: 手口の区分の適用開始年（2020 または 2026）

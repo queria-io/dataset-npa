@@ -5,7 +5,7 @@ description: '警察庁 犯罪統計資料（1～12月分の確定値）の都�
   第3表・第4表・第6表・第9表の当年の列を罪種×地域の縦持ちにしたもの。
 
   地域は原表の2列のままで、全国・地方計・北海道の方面別の行を含む。'
-published: false
+annotations: { queria: { published: false } }
 fields:
   - name: year
     description: 対象年（西暦。1～12月の確定値）

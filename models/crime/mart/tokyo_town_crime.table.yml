@@ -20,7 +20,6 @@ keywords:
   - 自転車盗
   - 万引き
   - 治安
-published: true
 licenses:
   - CC-BY-4.0
 sources:
@@ -32,14 +31,14 @@ fields:
   - name: city_code
     title: 市区町村コード
     description: 全国地方公共団体コード6桁（チェックデジット付き）
-    semantic: { role: entity, name: city }
+    annotations: { queria: { semantic: { role: entity, name: city } } }
   - name: municipality
     title: 区市町村
     description: 区市町村名。原表の郡名・島名（西多摩郡・三宅島など）は外してある
   - name: town
     title: 町丁字
     description: 区市町村名を除いた町丁字名。「以下不詳」は町丁字が不明の認知、NULL は区市町村名だけの行
-    semantic: { role: entity, name: small_area }
+    annotations: { queria: { semantic: { role: entity, name: small_area } } }
   - name: total
     title: 総合計
     description: 刑法犯の認知件数の合計

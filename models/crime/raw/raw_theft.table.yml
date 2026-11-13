@@ -3,7 +3,7 @@ name: raw_theft
 description: '都道府県警察 犯罪発生情報の生データ。警察庁標準様式（手口別の可変列）を
 
   全手口の和集合スキーマへ統合済み。手口に存在しない列は NULL。'
-published: false
+annotations: { queria: { published: false } }
 fields:
   - name: crime_name
     description: 罪名（窃盗）
