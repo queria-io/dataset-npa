@@ -1,0 +1,15 @@
+name: Probe Aichi
+on:
+  push:
+    branches: [claude/probe-aichi-403]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for m in hittakuri syazyounerai zitensyatou; do
+            curl -s -o /dev/null -w "$m %{http_code} %{size_download} %{num_redirects}\n" -A "Mozilla/5.0" -L --max-redirs 5 \
+              "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images/aichi-2024$m.csv" || true
+            sleep 2
+          done
+          curl -s -o /dev/null -w "page %{http_code}\n" -A "Mozilla/5.0" https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/crimeopendata.html || true
