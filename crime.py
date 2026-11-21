@@ -13,6 +13,7 @@
 """
 
 import csv
+import http.cookiejar
 import http.client
 import io
 import re
@@ -30,7 +31,7 @@ DATA_YEAR = 2024
 # BODIK (data.bodik.jp) は短間隔の連続アクセスを 403 で一時ブロックするため控えめにする
 REQUEST_INTERVAL_SEC = 2.0
 
-# 12 提供元から 84 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
+# 13 提供元から 91 ファイルを順に取るため、1 本の取りこぼしで全体が落ちる。
 # 接続断とタイムアウトは間を空けて取り直す
 FETCH_ATTEMPTS = 3
 FETCH_BACKOFF_SEC = 5.0
@@ -61,6 +62,7 @@ COLUMN_MAP = {
 OUTPUT_COLUMNS = [*COLUMN_MAP.values(), "source_prefecture", "data_year"]
 
 _OSAKA = "https://www.police.pref.osaka.lg.jp/material/files/group/2"
+_AICHI = "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images"
 _KANAGAWA = "https://www.police.pref.kanagawa.jp/assets/entry"
 _CHIBA = "https://www.police.pref.chiba.jp"
 _AOMORI = "https://www.police.pref.aomori.jp/seianbu/seian_kikaku/hanyoku/csv"
@@ -100,6 +102,10 @@ SOURCES: list[tuple[str, int, dict[str, str] | Callable[[], dict[str, str]]]] = 
     ("千葉県", 2024, lambda: _chiba_urls(2024)),
     ("神奈川県", 2024, {
         m: f"{_KANAGAWA}/kanagawa_2024{m}.csv"
+        for m in _MODUS
+    }),
+    ("愛知県", 2024, {
+        m: f"{_AICHI}/aichi-2024{m}.csv"
         for m in _MODUS
     }),
     ("京都府", 2024, {
@@ -149,11 +155,16 @@ SOURCES: list[tuple[str, int, dict[str, str] | Callable[[], dict[str, str]]]] = 
 ]
 
 
+# 愛知県の配布元 (Imperva) は Accept の無いリクエストを 403 で拒否し、
+# セッションの cookie を返さないクライアントにはリダイレクトを繰り返す
+_OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+
+
 def _fetch(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "*/*"})
     for attempt in range(1, FETCH_ATTEMPTS + 1):
         try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
+            with _OPENER.open(req, timeout=120) as resp:
                 return resp.read()
         except (urllib.error.URLError, http.client.HTTPException, TimeoutError) as exc:
             # 404 のような恒久的な応答は取り直しても変わらない。URL の更新が要る
