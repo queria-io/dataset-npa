@@ -6,10 +6,24 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - run: |
-          for m in hittakuri syazyounerai zitensyatou; do
-            curl -s -o /dev/null -w "$m %{http_code} %{size_download} %{num_redirects}\n" -A "Mozilla/5.0" -L --max-redirs 5 \
-              "https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/images/aichi-2024$m.csv" || true
-            sleep 2
-          done
-          curl -s -o /dev/null -w "page %{http_code}\n" -A "Mozilla/5.0" https://www.pref.aichi.jp/police/anzen/toukei/opendata/seian-s/crimeopendata.html || true
+          python - <<'PY'
+          import sys, time
+          sys.path.insert(0, ".")
+          import crime
+          for _ in range(2):
+              n = 0
+              for pref, y, urls in crime.SOURCES:
+                  if pref != "愛知県":
+                      continue
+                  for m, u in urls.items():
+                      r = crime._normalize(crime._decode_and_split(crime._fetch(u)), pref, y)
+                      n += len(r)
+                      print(m, len(r), flush=True)
+                      time.sleep(crime.REQUEST_INTERVAL_SEC)
+              print("total", n, flush=True)
+          PY
