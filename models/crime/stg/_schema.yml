@@ -3,3 +3,5 @@ version: 2
 models:
   - name: stg_theft
   - name: stg_crime_stats
+  - name: stg_fraud_stats
+  - name: stg_town_crime
