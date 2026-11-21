@@ -15,4 +15,4 @@ select
     completed_damage_amount_yen,
     cleared_cases,
     arrested_persons
-from {{ ref('raw_fraud_stats') }}
+from {{ ref('stg_fraud_stats') }}

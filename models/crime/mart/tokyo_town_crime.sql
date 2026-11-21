@@ -44,4 +44,4 @@ select
     other_intellectual,
     other_gambling,
     other_penal_code
-from {{ ref('raw_town_crime') }}
+from {{ ref('stg_town_crime') }}
