@@ -1,0 +1,86 @@
+$schema: https://tabledoc.queria.io/schemas/dataset/v1.json
+name: npa
+title: 警察庁・都道府県警察 犯罪・交通事故統計
+description: |-
+  警察庁・警視庁・都道府県警察が公開する交通事故と犯罪のオープンデータです。交通事故は 1 件ごとの地点、犯罪は町丁目単位の発生情報と都道府県別・全国の統計を持ちます。
+  出典は警察庁の交通事故統計情報・犯罪統計・特殊詐欺の統計、警視庁の町丁別認知件数、13 府県警の犯罪発生情報です。
+image: cover.png
+topics:
+  - 警察庁
+  - 都道府県警察
+  - 交通事故
+  - 犯罪
+  - 犯罪統計
+  - 認知件数
+  - 検挙率
+  - 防犯
+  - 特殊詐欺
+  - 被害額
+  - GIS
+  - 緯度経度
+  - 町丁目
+  - 警視庁
+  - 東京都
+synonyms:
+  - 交通事故
+  - 人身事故
+  - 犯罪発生情報
+  - 街頭犯罪
+  - ひったくり
+  - 自転車盗
+  - 犯罪統計
+  - 刑法犯
+  - 検挙率
+  - 特殊詐欺
+  - 振り込め詐欺
+  - ニセ警察詐欺
+  - 空き巣
+  - 侵入窃盗
+  - 町丁字別犯罪
+language: ja
+licenses:
+  - JP-PDL-1.0
+sources:
+  - id: index_opendata
+    title: 交通事故統計情報のオープンデータ（警察庁）
+    url: https://www.npa.go.jp/publications/statistics/koutsuu/opendata/index_opendata.html
+  - id: hanzaiopendatalink
+    title: 犯罪オープンデータ リンク集（警察庁）
+    url: https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html
+  - id: statistics
+    title: 犯罪統計（警察庁）
+    url: https://www.npa.go.jp/publications/statistics/sousa/statistics.html
+  - id: sagi
+    title: 特殊詐欺の認知・検挙状況等について（警察庁）
+    url: https://www.npa.go.jp/publications/statistics/sousa/sagi.html
+  - id: ninchikensu
+    title: 区市町村の町丁別、罪種別及び手口別認知件数（警視庁）
+    url: https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
+contributors:
+  - id: npa
+    title: 警察庁
+    url: https://www.npa.go.jp/
+    roles:
+      - rightsHolder
+  - id: keishicho
+    title: 警視庁
+    url: https://www.keishicho.metro.tokyo.lg.jp/
+    roles:
+      - rightsHolder
+  - id: 青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察
+    title: 青森県警察・福島県警察・栃木県警察・埼玉県警察・千葉県警察・神奈川県警察・愛知県警察・京都府警察・大阪府警察・徳島県警察・佐賀県警察・宮崎県警察・鹿児島県警察
+    roles:
+      - rightsHolder
+temporal_coverage:
+  start: '2009-01-01'
+  end:
+spatial_coverage:
+  - JP
+update_frequency: yearly
+schemas:
+  - name: main
+    title: メイン
+  - name: crime
+    title: 犯罪発生情報・犯罪統計
+  - name: code
+    title: コード表

@@ -1,5 +1,4 @@
-schema: crime
-name: theft
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 犯罪発生情報（街頭犯罪）
 description: |-
   街頭犯罪 7 手口（ひったくり・車上ねらい・部品ねらい・自動販売機ねらい・自動車盗・オートバイ盗・自転車盗）の発生情報を 1 認知件 1 行・町丁目単位で持つテーブルです。
@@ -7,7 +6,7 @@ description: |-
   - 収録は 13 府県の 2024 年認知分だけで、全国の件数や府県間の比較には使えません
   - 列は手口ごとの様式の和集合で、その手口に無い列は NULL です
   - 発生日は認知年より前に遡ることがあります
-keywords:
+topics:
   - 都道府県警察
   - 犯罪
   - 防犯
@@ -19,8 +18,8 @@ licenses:
   - JP-GOV-STD-2.0
   - JP-PDL-1.0
 sources:
-  - path: https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html
-fields:
+  - hanzaiopendatalink
+columns:
   - name: crime_name
     title: 罪名
     description: 窃盗（一部に常習累犯窃盗）
@@ -33,17 +32,17 @@ fields:
   - name: city_code
     title: 市区町村コード（発生地）
     description: JIS 市区町村コード6桁（チェックデジット付き）。政令指定都市は区コード
-    annotations: { queria: { semantic: { role: entity, name: city } } }
+    entity: city
   - name: city
     title: 市区町村（発生地）
   - name: town
     title: 町丁目（発生地）
-    annotations: { queria: { semantic: { role: entity, name: small_area } } }
+    entity: small_area
   - name: occurred_date
     title: 発生年月日（始期）
-    description: '発生日が「不明」のレコードは NULL。データは認知年（data_year）単位の公開のため、
-
-      発生始期は認知年より過去に遡ることがある'
+    description: |-
+      発生日が「不明」のレコードは NULL。データは認知年（data_year）単位の公開のため、
+      発生始期は認知年より過去に遡ることがある
   - name: occurred_hour
     title: 発生時（始期）
     description: 0〜23時。「不明」は NULL

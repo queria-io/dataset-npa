@@ -1,5 +1,4 @@
-schema: crime
-name: special_fraud
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 特殊詐欺の認知・検挙状況（手口別・月別）
 description: |-
   特殊詐欺の全国の認知件数・被害額・検挙件数・検挙人員を、手口別・月別に持つテーブルです。2020 年 1 月から最新の公表月までで、都道府県別の値はありません。
@@ -7,7 +6,7 @@ description: |-
   - 手口の区分は classification_year で 2 通りあり、2025 年は両方に入っています。区分をまたいで連結・合計しないでください
   - modus が「特殊詐欺」の行は全手口の合計です
   - 当年の値は暫定値（is_provisional）です
-keywords:
+topics:
   - 警察庁
   - 特殊詐欺
   - 振り込め詐欺
@@ -21,8 +20,8 @@ keywords:
 licenses:
   - JP-PDL-1.0
 sources:
-  - path: https://www.npa.go.jp/publications/statistics/sousa/sagi.html
-fields:
+  - sagi
+columns:
   - name: classification_year
     title: 手口の区分
     description: 区分の適用開始年。2020 は令和2年の10類型、2026 は令和8年の区分
