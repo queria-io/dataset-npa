@@ -1,5 +1,4 @@
-schema: crime
-name: tokyo_town_crime
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 東京都の町丁字別・罪種別・手口別の認知件数
 description: |-
   東京都内の刑法犯の認知件数を、町丁字ごとに罪種・手口の 37 区分で持つテーブルです。警視庁の公表値の年累計で、1 年×1 町丁字で 1 行、2009 年から 2025 年までです。
@@ -7,7 +6,7 @@ description: |-
   - 認知が 0 件の町丁字は行がありません。0 件として扱ってください
   - total は罪種の計（*_total）の合計、罪種の計は手口の合計なので、計と手口を足し合わせないでください
   - 発生地が都外・不明の認知は含まないので、町丁字の合計は都全体の公表値と一致しません
-keywords:
+topics:
   - 警視庁
   - 東京都
   - 犯罪
@@ -23,22 +22,22 @@ keywords:
 licenses:
   - CC-BY-4.0
 sources:
-  - path: https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
-fields:
+  - ninchikensu
+columns:
   - name: year
     title: 対象年
     description: 西暦。1〜12月の年累計
   - name: city_code
     title: 市区町村コード
     description: 全国地方公共団体コード6桁（チェックデジット付き）
-    annotations: { queria: { semantic: { role: entity, name: city } } }
+    entity: city
   - name: municipality
     title: 区市町村
     description: 区市町村名。原表の郡名・島名（西多摩郡・三宅島など）は外してある
   - name: town
     title: 町丁字
     description: 区市町村名を除いた町丁字名。「以下不詳」は町丁字が不明の認知、NULL は区市町村名だけの行
-    annotations: { queria: { semantic: { role: entity, name: small_area } } }
+    entity: small_area
   - name: total
     title: 総合計
     description: 刑法犯の認知件数の合計

@@ -2,16 +2,6 @@ version: 2
 
 models:
   - name: theft
-    description: |
-      都道府県警察が公開する犯罪発生情報。窃盗のうち街頭犯罪7手口
-      （ひったくり・車上ねらい・部品ねらい・自動販売機ねらい・自動車盗・
-      オートバイ盗・自転車盗）を1認知件1レコード・町丁目単位で収録する。
-      現在は令和6年（2024年）分・13府県（青森・福島・栃木・埼玉・千葉・神奈川・
-      愛知・京都・大阪・徳島・佐賀・宮崎・鹿児島）。いずれも商用利用・再配布可の利用規約
-      （CC BY / 政府標準利用規約 準拠 / 公共データ利用規約 PDL1.0）を確認済み。
-      列は警察庁標準様式（手口別の可変列）の和集合で、手口に存在しない列は NULL。
-      発見起点: 警察庁 犯罪オープンデータ リンク集。
-      https://www.npa.go.jp/toukei/seianki/hanzaiopendatalink.html
     access: public
     columns:
       - name: crime_name
@@ -37,13 +27,6 @@ models:
       - name: data_year
 
   - name: prefecture_crime
-    description: |
-      警察庁 犯罪統計資料（1～12月分の確定値）の都道府県別・罪種別の認知件数・検挙件数・検挙人員。
-      1年×1罪種×1都道府県で1行。2020年から2025年まで。
-      罪種は刑法犯総数・窃盗犯総数・重要犯罪（殺人・強盗・放火など）・重要窃盗犯（侵入盗・自動車盗・
-      ひったくり・すり）・主な街頭犯罪総数・器物損壊・住居侵入で、互いに包含関係がある。
-      出典: 警察庁 犯罪統計資料（政府統計の総合窓口 e-Stat 掲載）。
-      https://www.npa.go.jp/publications/statistics/sousa/statistics.html
     access: public
     columns:
       - name: year
@@ -55,11 +38,6 @@ models:
       - name: arrested_persons
 
   - name: special_fraud
-    description: |
-      警察庁「特殊詐欺の認知・検挙状況等について」の全国の手口別・月別の認知件数・被害額・検挙件数・検挙人員。
-      1区分×1か月×1手口で1行。2020年から最新の公表月まで。
-      出典: 警察庁 特殊詐欺の認知・検挙状況等について。
-      https://www.npa.go.jp/publications/statistics/sousa/sagi.html
     access: public
     columns:
       - name: classification_year
@@ -76,11 +54,6 @@ models:
       - name: arrested_persons
 
   - name: tokyo_town_crime
-    description: |
-      警視庁「区市町村の町丁別、罪種別及び手口別認知件数」の年累計。1年×1町丁字で1行。2009年から2025年まで。
-      刑法犯の認知件数を罪種と手口の37区分で持つ。認知が0件の町丁字は行が無い。
-      出典: 警視庁 区市町村の町丁別、罪種別及び手口別認知件数。
-      https://www.keishicho.metro.tokyo.lg.jp/about_mpd/jokyo_tokei/jokyo/ninchikensu.html
     access: public
     columns:
       - name: year

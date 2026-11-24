@@ -1,8 +1,7 @@
-schema: main
-name: raw_traffic_accident
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 description: 交通事故統計（本票）の生データ。緯度経度は度分秒連結の固定長文字列。
-annotations: { queria: { published: false } }
-fields:
+hidden: true
+columns:
   - name: prefecture_code
     description: 都道府県コード（警察の管轄区分。北海道は方面別に5分割）
   - name: police_station_code
