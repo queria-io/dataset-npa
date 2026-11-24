@@ -3,8 +3,6 @@ name: Sync
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "*.md"
   schedule:
     - cron: "0 19 20 4 *" # 毎年4月21日 04:00 JST（前年確定データの公開後）
   workflow_dispatch:
@@ -21,7 +19,7 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
-    uses: queria-io/dataset-shared/.github/workflows/sync.yml@16c45f04db7618f9e3a1f341820ef7e769377a08
+    uses: queria-io/dataset-shared/.github/workflows/sync.yml@main
     with:
       dataset_name: npa
     secrets:
